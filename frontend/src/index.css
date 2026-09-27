@@ -5,21 +5,21 @@
 @tailwind utilities;
 
 :root {
-  /* Cores Fluent Design (Light Mode) */
-  --text: #323130;
-  --text-h: #11100f;
-  --bg: #faf9f8;
-  --border: #e1dfdd;
-  --code-bg: #f3f2f1;
+  /* Cores Fluent Design - Light Mode (Branco, Azul e Preto) */
+  --text: #1e293b;        /* Texto principal (Grafite bem escuro / Quase preto) */
+  --text-h: #0f172a;      /* Títulos (Preto puro) */
+  --bg: #ffffff;          /* Fundo Branco Puro */
+  --border: #e2e8f0;      /* Bordas suaves */
+  --code-bg: #f8fafc;     /* Fundo de código levemente destacado */
   
-  /* Azul padrão da Microsoft (Fluent Accent) */
+  /* Azul Padrão Microsoft Fluent UI */
   --accent: #0078d4;  
   --accent-bg: rgba(0, 120, 212, 0.08);
-  --accent-border: rgba(0, 120, 212, 0.4);
-  --social-bg: rgba(255, 255, 255, 0.7);
+  --accent-border: rgba(0, 120, 212, 0.3);
+  --social-bg: #f8fafc;
   
-  /* Fluent Elevation (Sombras suaves em camadas) */
-  --shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.132), 0 0.3px 0.9px 0 rgba(0, 0, 0, 0.108);
+  /* Fluent Elevation (Sombras leves em camadas) */
+  --shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.06), 0 0.3px 0.9px 0 rgba(0, 0, 0, 0.04);
 
   /* Tipografia Microsoft Fluent */
   --sans: 'Segoe UI Variable', 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -28,7 +28,7 @@
 
   font: 16px/145% var(--sans);
   letter-spacing: -0.01em;
-  color-scheme: light dark;
+  color-scheme: light;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
@@ -37,32 +37,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Cores Fluent Design (Dark Mode) */
-    --text: #adadad;
-    --text-h: #ffffff;
-    --bg: #202020;
-    --border: #333333;
-    --code-bg: #2c2c2c;
-    --accent: #4cc2ff;
-    --accent-bg: rgba(76, 194, 255, 0.12);
-    --accent-border: rgba(76, 194, 255, 0.4);
-    --social-bg: rgba(255, 255, 255, 0.04);
-    --shadow: 0 3.2px 7.2px 0 rgba(0, 0, 0, 0.36), 0 0.6px 1.8px 0 rgba(0, 0, 0, 0.24);
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
 body {
   margin: 0;
   background-color: var(--bg);
+  color: var(--text);
 }
 
-/* Removido a largura fixa de 1126px para a Sidebar ocupar a lateral normalmente */
 #root {
   width: 100%;
   min-height: 100vh;
@@ -108,7 +88,7 @@ code,
 .counter {
   font-family: var(--mono);
   display: inline-flex;
-  border-radius: 4px; /* Raio Fluent padrão */
+  border-radius: 4px;
   color: var(--text-h);
 }
 
@@ -120,7 +100,7 @@ code {
   border: 1px solid var(--border);
 }
 
-/* Configuração de Variáveis do Shadcn compatíveis com o Fluent UI */
+/* Configuração do Shadcn UI (Tema Light Forçado / Branco, Azul e Preto) */
 @layer base {
   .theme {
     --font-heading: var(--heading);
@@ -128,65 +108,74 @@ code {
   }
 
   :root {
-    --background: oklch(0.985 0 0);
-    --foreground: oklch(0.205 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.205 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.205 0 0);
-    --primary: oklch(0.52 0.2 250); /* Azul Microsoft */
-    --primary-foreground: oklch(1 0 0);
-    --secondary: oklch(0.96 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.96 0 0);
-    --muted-foreground: oklch(0.48 0 0);
-    --accent: oklch(0.96 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.89 0 0);
-    --input: oklch(0.89 0 0);
-    --ring: oklch(0.52 0.2 250);
-    --radius: 0.25rem; /* 4px Fluent UI border-radius */
+    /* Fundo Branco Puro */
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.14 0.03 260); /* Texto Preto/Grafite */
     
-    /* Configurações da Sidebar */
-    --sidebar: oklch(0.97 0 0);
-    --sidebar-foreground: oklch(0.205 0 0);
-    --sidebar-primary: oklch(0.52 0.2 250);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.14 0.03 260);
+    
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.14 0.03 260);
+    
+    /* Azul Microsoft */
+    --primary: oklch(0.55 0.22 255); 
+    --primary-foreground: oklch(1 0 0);
+    
+    --secondary: oklch(0.96 0.01 250);
+    --secondary-foreground: oklch(0.14 0.03 260);
+    
+    --muted: oklch(0.96 0.01 250);
+    --muted-foreground: oklch(0.45 0.02 260);
+    
+    --accent: oklch(0.95 0.02 255);
+    --accent-foreground: oklch(0.55 0.22 255);
+    
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: oklch(0.92 0.01 250);
+    --input: oklch(0.92 0.01 250);
+    --ring: oklch(0.55 0.22 255);
+    --radius: 0.25rem; /* Cantos discretos Fluent (4px) */
+    
+    /* Configurações da Sidebar em Branco e Azul */
+    --sidebar: oklch(0.985 0.005 250); /* Fundo branco levemente contrastado com a página */
+    --sidebar-foreground: oklch(0.14 0.03 260);
+    --sidebar-primary: oklch(0.55 0.22 255);
     --sidebar-primary-foreground: oklch(1 0 0);
-    --sidebar-accent: oklch(0.93 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.89 0 0);
-    --sidebar-ring: oklch(0.52 0.2 250);
+    --sidebar-accent: oklch(0.94 0.02 255);
+    --sidebar-accent-foreground: oklch(0.55 0.22 255);
+    --sidebar-border: oklch(0.92 0.01 250);
+    --sidebar-ring: oklch(0.55 0.22 255);
   }
 
+  /* Redefinido o Dark para manter a mesma paleta clara se a classe .dark for aplicada */
   .dark {
-    --background: oklch(0.18 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.22 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.22 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.68 0.16 230);
-    --primary-foreground: oklch(0.15 0 0);
-    --secondary: oklch(0.26 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.26 0 0);
-    --muted-foreground: oklch(0.7 0 0);
-    --accent: oklch(0.26 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(0.28 0 0);
-    --input: oklch(0.28 0 0);
-    --ring: oklch(0.68 0.16 230);
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.14 0.03 260);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.14 0.03 260);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.14 0.03 260);
+    --primary: oklch(0.55 0.22 255);
+    --primary-foreground: oklch(1 0 0);
+    --secondary: oklch(0.96 0.01 250);
+    --secondary-foreground: oklch(0.14 0.03 260);
+    --muted: oklch(0.96 0.01 250);
+    --muted-foreground: oklch(0.45 0.02 260);
+    --accent: oklch(0.95 0.02 255);
+    --accent-foreground: oklch(0.55 0.22 255);
+    --border: oklch(0.92 0.01 250);
+    --input: oklch(0.92 0.01 250);
+    --ring: oklch(0.55 0.22 255);
     
-    --sidebar: oklch(0.2 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.68 0.16 230);
-    --sidebar-primary-foreground: oklch(0.15 0 0);
-    --sidebar-accent: oklch(0.28 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(0.28 0 0);
-    --sidebar-ring: oklch(0.68 0.16 230);
+    --sidebar: oklch(0.985 0.005 250);
+    --sidebar-foreground: oklch(0.14 0.03 260);
+    --sidebar-primary: oklch(0.55 0.22 255);
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-accent: oklch(0.94 0.02 255);
+    --sidebar-accent-foreground: oklch(0.55 0.22 255);
+    --sidebar-border: oklch(0.92 0.01 250);
+    --sidebar-ring: oklch(0.55 0.22 255);
   }
 
   * {
