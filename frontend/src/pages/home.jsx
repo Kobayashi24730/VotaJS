@@ -1,13 +1,16 @@
+import React from "react"
 import { motion } from "framer-motion"
 import { Vote, Activity, CheckCircle2, ArrowRight } from "lucide-react"
+
 import { Button } from "@/components/ui/button"
-import { Enquetes } from "@/components/sections/enquetes";
-import imgEs from "../assets/Checklist-removebg-preview.png";
+import { Enquetes } from "@/components/sections/enquetes"
+import { AnimateSections } from "@/components/animateSections"
+import imgEs from "../assets/Checklist-removebg-preview.png"
+
 export function Home() {
   return (
-    <div className="w-full bg-white">
-      <section className="relative min-h-[calc(80vh-4rem)] overflow-hidden flex items-center py-12 px-4 sm:px-6 lg:px-8 bg-white">
-        {/* Luzes de Fundo (Gradients de brilho suave) */}
+    <div className="w-full bg-white overflow-hidden">
+      <section className="relative min-h-[calc(80vh-4rem)] flex items-center py-12 px-4 sm:px-6 lg:px-8 bg-white">
         <motion.div
           animate={{
             y: [0, -15, 0],
@@ -35,9 +38,8 @@ export function Home() {
         />
 
         <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Lado Esquerdo: Texto e Ações */}
+          {/* Lado Esquerdo: Conteúdo textual com delays escalonados */}
           <div className="flex flex-col items-start gap-6">
-            {/* Badge de status Fluent UI */}
             <motion.div
               initial={{ opacity: 0, y: -15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -51,17 +53,18 @@ export function Home() {
               Sistema VotaJS em Tempo Real
             </motion.div>
 
-            {/* Título Principal */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 text-left leading-[1.15]"
             >
-              Sistema de enquetes em <span className="text-[#0078d4] underline decoration-[#0078d4]/30 decoration-wavy underline-offset-8">Java</span>
+              Sistema de enquetes em{" "}
+              <span className="text-[#0078d4] underline decoration-[#0078d4]/30 decoration-wavy underline-offset-8">
+                Java
+              </span>
             </motion.h1>
 
-            {/* Subtítulo */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -71,7 +74,6 @@ export function Home() {
               Aqui você vota em tempo real. Crie votações instantâneas, acompanhe os resultados ao vivo e analise a participação do seu público.
             </motion.p>
 
-            {/* Botões de Ação */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -87,7 +89,6 @@ export function Home() {
               </Button>
             </motion.div>
 
-            {/* Destaques */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -105,7 +106,7 @@ export function Home() {
             </motion.div>
           </div>
 
-          {/* Lado Direito: Imagem com Linhas Animadas ao Redor */}
+          {/* Lado Direito: Imagem e Card Flutuante */}
           <div className="relative flex justify-center items-center p-4">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -113,11 +114,8 @@ export function Home() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative z-10 w-full max-w-md lg:max-w-none group"
             >
-
-              {/* Brilho pulsante atrás da imagem */}
               <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-2xl blur-md opacity-25 group-hover:opacity-40 transition duration-500"></div>
 
-              {/* Container da Imagem */}
               <div className="relative rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-2xl">
                 <img
                   src={imgEs}
@@ -127,7 +125,7 @@ export function Home() {
               </div>
             </motion.div>
 
-            {/* Card Flutuante com sombras Fluent UI */}
+            {/* Card Flutuante */}
             <motion.div
               initial={{ opacity: 0, x: -30, y: 30 }}
               animate={{ 
@@ -154,9 +152,11 @@ export function Home() {
         </div>
       </section>
 
-      <section className="w-full">
-        <Enquetes />
-      </section>
+      <AnimateSections delay={0.1}>
+        <section className="w-full">
+          <Enquetes />
+        </section>
+      </AnimateSections>
     </div>
   )
 }
