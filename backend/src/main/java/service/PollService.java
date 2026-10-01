@@ -44,5 +44,7 @@ public class PollService {
         if (!option.getPoll().getId().equals(poll.getId())) {
             throw new RuntimeException("Opção nao pertence a essa enquete.");
         }
+        option.setVoteCount(option.getVoteCount() + 1);
+        optionRepository.save(option);
     }
 }
