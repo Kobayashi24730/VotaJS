@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Plus, Search, SlidersHorizontal } from "lucide-react";
 import { Cards } from "@/components/cards";
-
+import { usePolls } from "@/hooks/usePolls";
 export function Enquetes(){
+    const { polls, loading, fetchPolls } = usePolls();
+
     return(
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-8">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-slate-200">
@@ -51,13 +53,16 @@ export function Enquetes(){
                         Enquetes Criadas
                     </h3>
                     <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-600 border border-slate-200/60">
-                        2 ativas
+                        {polls.length}
                     </span>
                     </div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    <Cards />
-                    <Cards />
+                    {polls.map((poll) => {
+                        return (
+                            <Cards key={poll.id} poll={poll} />
+                        );
+                    })}
                 </div>
             </div>
         </div>
