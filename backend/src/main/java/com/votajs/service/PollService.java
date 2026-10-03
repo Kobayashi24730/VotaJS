@@ -1,11 +1,11 @@
-package com.exemple.votajs.service;
+package com.votajs.service;
 
-import com.exemplo.votajs.model.Option;
-import com.exemplo.votajs.model.Poll;
-import com.exemplo.votajs.repository.OptionRepository;
-import com.exemplo.votajs.repository.PollRepository;
-import org.stringframeork.stereotype.Service;
-import org.stringframeork.transaction.annotation.Transactional;
+import com.votajs.model.Option;
+import com.votajs.model.Poll;
+import com.votajs.repository.OptionRepository;
+import com.votajs.repository.PollRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,12 +16,12 @@ public class PollService {
     private final PollRepository pollRepository;
     private final OptionRepository optionRepository;
 
-    public PollService(PollRepository, pollRepository, OptionRepository, optionRepository) {
+    public PollService(PollRepository pollRepository, OptionRepository optionRepository) {
         this.pollRepository = pollRepository;
         this.optionRepository = optionRepository;
     }
 
-    public List<Poll> getAllPOlls() {
+    public List<Poll> getAllPolls() {
         return pollRepository.findAll();
     }
 
@@ -31,8 +31,8 @@ public class PollService {
 
     @Transactional
     public Poll createPoll(Poll poll) {
-        if (poll.getOption() != null) {
-            poll.getOption().forEach(option -> option.setPoll(poll));
+        if (poll.getOptions() != null) {
+            poll.getOptions().forEach(option -> option.setPoll(poll));
         }
         return pollRepository.save(poll);
     }
@@ -40,11 +40,11 @@ public class PollService {
     @Transactional
     public void vote(Long pollId, Long optionId) {
         Poll poll = getPollById(pollId);
-        Option option = optionRepository.findByd(optionId).orElseThrow(()  -> new RunTimeException("Opção nao encontrada."));
+        Option option = optionRepository.findById(optionId).orElseThrow(()  -> new RuntimeException("Opção nao encontrada."));
         if (!option.getPoll().getId().equals(poll.getId())) {
             throw new RuntimeException("Opção nao pertence a essa enquete.");
         }
-        option.setVoteCount(option.getVoteCount() + 1);
+        option.setVotes(option.getVotes() + 1);
         optionRepository.save(option);
     }
 }

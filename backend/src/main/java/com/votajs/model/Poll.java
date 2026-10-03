@@ -1,4 +1,4 @@
-package com.exemplo.votajs.model;
+package com.votajs.model;
 
 import jakarta.persistence.*;
 import java.util.List;
@@ -8,17 +8,16 @@ import lombok.*;
 
 @Entity
 @Table(name = "tb_polls")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 public class Poll {
-    @id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
     private String question;
 
-    @OneToMany(mappedBy = "poll", cascade = CascadeType.All, orphanRemoval = true)
+    @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Option> options = new ArrayList<>();
 }
