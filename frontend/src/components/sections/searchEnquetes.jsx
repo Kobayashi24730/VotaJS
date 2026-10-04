@@ -4,10 +4,16 @@ import { Cards } from "@/components/cards";
 import { AnimateSections } from "@/components/animateSections";
 import { usePolls } from "@/hooks/usePolls";
 import { useMemo, useState } from "react";
+import { ModalFilters } from "@/components/modals/modalFilters";
 
 export function SearchEnquetes() {
   const { polls, loading, fetchPolls } = usePolls();
-
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [activeFilter, setActiveFilter] = useState({
+    category: "",
+    sortBy: "newest",
+    voteRange: "Todos",
+  });
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("Todos");
 
@@ -19,18 +25,33 @@ export function SearchEnquetes() {
       const question = poll.question?.toLowerCase().includes(term);
       const description = poll.description?.toLowerCase().includes(term);
       const tilematch = poll.descriptionTitle?.toLowerCase().includes(term);
+      const matchesSearch = question || description || tilematch;
 
-      return question || description || tilematch;
+      const matchesCategory = activeFilter.category ? poll.question?.toLowerCase() === activeFilter.category.toLowerCase() : true;
+      const totalVotes = poll.votesCount || 0;
+      let matchesVoteRange = true;
+      if (activeFilter.voteRange === "under-50") {
+        matchesVoteRange = totalVotes <= 50;
+      } else if (activeFilter.voteRange === "over-50") {
+        matchesVoteRange = totalVotes > 50;
+      }
+
+      return matchesSearch && matchesCategory && matchesVoteRange;
     });
 
     if (sortBy === "popular") {
       result = [...result].sort((a, b) => (b.votesCount || 0) - (a.votesCount || 0));
     } else if (sortBy === "date") {
-      result = result.sort((a, b) => new Date(b.vote) - new Date(a.vote));
+      result = result.sort((a, b) => new Date(b.date) - new Date(a.date));
     }
 
     return result;
-  }, [polls, search, sortBy]);
+  }, [polls, search, sortBy, activeFilter]);
+
+  const handleApplyFilters = (filters) => {
+    setActiveFilter(filters);
+    setModalIsOpen(false);
+  }
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-8">
@@ -60,11 +81,18 @@ export function SearchEnquetes() {
 
           <Button
             variant="outline"
+            onClick={() => setModalIsOpen(true)}
             className="w-full sm:w-auto border-slate-200 text-slate-700 hover:bg-slate-50 gap-2 rounded-md font-medium px-4"
           >
             <SlidersHorizontal className="h-4 w-4 text-slate-500" />
-            Filtros
           </Button>
+          {modalIsOpen && (
+            <ModalFilters
+              isOpen={modalIsOpen}
+              onClose={() => setModalIsOpen(false)}
+              onApplyFilters={handleApplyFilters}
+            />
+          )}
           <Button
             variant={sortBy === "date" ? "default" : "outline"}
             onClick={(e) => setSortBy("date")}
@@ -93,15 +121,15 @@ export function SearchEnquetes() {
                 Enquetes Criadas
               </h3>
               <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-600 border border-slate-200/60">
-                {polls.length}
+                {filterPolls.length}
               </span>
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {polls.map((poll, key) => {
+            {filterPolls.map((poll) => {
               return (
-                <Cards id={key} poll={poll}/>
+                <Cards key={poll.id} poll={poll}/>
               )
             })}
           </div>

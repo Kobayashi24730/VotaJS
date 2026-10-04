@@ -1,10 +1,21 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, Search, SlidersHorizontal } from "lucide-react";
 import { Cards } from "@/components/cards";
 import { usePolls } from "@/hooks/usePolls";
+import { ModalFilters } from "@/components/modals/modalFilters";
 export function Enquetes(){
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [activeFilter, setActiveFilter] = useState({
+        category: "",
+        sortBy: "newest",
+    });
     const { polls, loading, fetchPolls } = usePolls();
 
+    const handleApplyFilters = (filters) => {
+        setActiveFilter(filters);
+        setModalIsOpen(false);
+    }
     return(
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-8">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-slate-200">
@@ -39,11 +50,13 @@ export function Enquetes(){
                 <Button
                     variant="outline"
                     className="w-full sm:w-auto border-slate-200 text-slate-700 hover:bg-slate-50 gap-2 rounded-md font-medium px-4"
+                    onClick={() => setModalIsOpen(true)}
                 >
                     <SlidersHorizontal className="h-4 w-4 text-slate-500" />
                     Filtros
                 </Button>
             </div>
+            {modalIsOpen && <ModalFilters isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)} onApplyFilters={handleApplyFilters} />}
 
             {/* Lista */}
             <div className="pt-6 border-t border-slate-100">
