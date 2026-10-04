@@ -7,6 +7,8 @@ import { Settings } from "@/pages/settings";
 import { Navbar } from "@/components/navbar";
 import { AuthProvider } from "@/context/AuthContext";
 import './App.css';
+import { ProtectedRoute } from "@/components/protectedRoute";
+import { Auth } from "@/pages/auth";
 
 function MainLayout() {
   return (
@@ -29,7 +31,10 @@ function App() {
           <Route element={<MainLayout />} >
             <Route path="/" element={<Home />} />
             <Route path="/pesquisar" element={<Pesquisar />} />
-            <Route path="/settings" element={<Settings />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/settings" element={<Settings />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>

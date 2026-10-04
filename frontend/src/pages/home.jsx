@@ -6,11 +6,19 @@ import { Enquetes } from "@/components/sections/enquetes";
 import { AnimateSections } from "@/components/animateSections";
 import imgEs from "../assets/Checklist-removebg-preview.png";
 import { ModalCreate } from "@/components/modals/modalCreate";
+import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export function Home() {
+  const { signed } = useAuth();
+  const navigate = useNavigate(); 
   const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
 
   const handleCreatePoll = (newPollData) => {
+    if (!signed) {
+      navigate("/login");
+      return;
+    }
     setIsOpenCreateModal(false);
   }
 
