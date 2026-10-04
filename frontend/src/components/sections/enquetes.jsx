@@ -1,16 +1,24 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, Search, SlidersHorizontal } from "lucide-react";
 import { Cards } from "@/components/cards";
 import { usePolls } from "@/hooks/usePolls";
 import { ModalFilters } from "@/components/modals/modalFilters";
+import { filtered } from "@/utils/filters";
 export function Enquetes(){
+    const { polls, loading, fetchPolls, error } = usePolls();
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [activeFilter, setActiveFilter] = useState({
         category: "",
+        voteRange: "Todos",
         sortBy: "newest",
     });
-    const { polls, loading, fetchPolls } = usePolls();
+    const [search, setSearch] = useState("");
+    const [sortBy, setSortBy] = useState("Todos");
+
+    const filterPolls = useMemo(() => {
+        return filtered(polls, search, sortBy, activeFilter);
+    }, [polls, search, sortBy, activeFilter]);
 
     const handleApplyFilters = (filters) => {
         setActiveFilter(filters);
@@ -42,6 +50,8 @@ export function Enquetes(){
                     <input
                     type="text"
                     placeholder="Pesquisar enquete..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                     className="w-full pl-9 pr-4 py-2 text-sm bg-white border border-slate-200 rounded-md text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0078d4] focus:border-transparent transition-all shadow-xs"
                     />
                 </div>
@@ -66,12 +76,12 @@ export function Enquetes(){
                         Enquetes Criadas
                     </h3>
                     <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-600 border border-slate-200/60">
-                        {polls.length}
+                        {filterPolls.length}
                     </span>
                     </div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {polls.map((poll) => {
+                    {filterPolls.map((poll) => {
                         return (
                             <Cards key={poll.id} poll={poll} />
                         );

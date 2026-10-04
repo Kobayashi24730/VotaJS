@@ -1,13 +1,20 @@
-import React from "react"
-import { motion } from "framer-motion"
-import { Vote, Activity, CheckCircle2, ArrowRight } from "lucide-react"
-
-import { Button } from "@/components/ui/button"
-import { Enquetes } from "@/components/sections/enquetes"
-import { AnimateSections } from "@/components/animateSections"
-import imgEs from "../assets/Checklist-removebg-preview.png"
+import { React, useState } from "react";
+import { motion } from "framer-motion";
+import { Vote, Activity, CheckCircle2, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Enquetes } from "@/components/sections/enquetes";
+import { AnimateSections } from "@/components/animateSections";
+import imgEs from "../assets/Checklist-removebg-preview.png";
+import { ModalCreate } from "@/components/modals/modalCreate";
 
 export function Home() {
+  const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
+
+  const handleCreateModal = (result) => {
+    setActiveFilter(result);
+    setIsOpenCreateModal(false);
+  }
+
   return (
     <div className="w-full bg-white overflow-hidden">
       <section className="relative min-h-[calc(80vh-4rem)] flex items-center py-12 px-4 sm:px-6 lg:px-8 bg-white">
@@ -80,10 +87,11 @@ export function Home() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="flex flex-wrap gap-4 pt-2"
             >
-              <Button size="lg" className="gap-2 font-medium bg-[#0078d4] hover:bg-[#0063b1] text-white shadow-md hover:shadow-lg transition-all rounded-md px-6">
+              <Button size="lg" onClick={() => setIsOpenCreateModal(true)} className="gap-2 font-medium bg-[#0078d4] hover:bg-[#0063b1] text-white shadow-md hover:shadow-lg transition-all rounded-md px-6">
                 Criar Enquete
                 <ArrowRight className="h-4 w-4" />
               </Button>
+              {isOpenCreateModal && <ModalCreate isOpen={isOpenCreateModal} onClose={() => setIsOpenCreateModal(false)} onConfirm={handleCreateModal} />}
               <Button size="lg" variant="outline" className="border-slate-300 text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md px-6">
                 Ver Resultados
               </Button>
