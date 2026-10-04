@@ -9,7 +9,7 @@ export const pollServices = {
         const response = await api.get(`/polls/${id}`);
         return response.data;
     },
-    creaetPoll: async (poll) => {
+    createPoll: async (poll) => {
         const response = await api.post('/polls', poll);
         return response.data;
     },

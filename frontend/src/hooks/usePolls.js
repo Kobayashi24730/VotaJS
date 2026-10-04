@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { pollServices } from "@/services/getPolls";
+import { pollServices } from "@/services/pollSevices";
 
 export function usePolls() {
     const [polls, setPolls] = useState([]);
@@ -24,7 +24,13 @@ export function usePolls() {
             setPolls((prev) => [...prev, response]);
             return response;
         } catch (err) {
-            throw new Error("Erro ao criar uma nova enquete.");
+            console.error("Detalhes do erro:", err.response?.data || err);
+            const errorMessage =
+                err.response?.data?.message ||
+                err.message ||
+                "Erro ao criar uma nova enquete.";
+
+            throw new Error(errorMessage);
         }
     };
 

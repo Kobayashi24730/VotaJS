@@ -10,8 +10,7 @@ import { ModalCreate } from "@/components/modals/modalCreate";
 export function Home() {
   const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
 
-  const handleCreateModal = (result) => {
-    setActiveFilter(result);
+  const handleCreatePoll = (newPollData) => {
     setIsOpenCreateModal(false);
   }
 
@@ -91,7 +90,13 @@ export function Home() {
                 Criar Enquete
                 <ArrowRight className="h-4 w-4" />
               </Button>
-              {isOpenCreateModal && <ModalCreate isOpen={isOpenCreateModal} onClose={() => setIsOpenCreateModal(false)} onConfirm={handleCreateModal} />}
+              {isOpenCreateModal && (
+                <ModalCreate
+                  isOpen={isOpenCreateModal}
+                  onClose={() => setIsOpenCreateModal(false)}
+                  onConfirm={handleCreatePoll}
+                />
+              )}
               <Button size="lg" variant="outline" className="border-slate-300 text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-md px-6">
                 Ver Resultados
               </Button>

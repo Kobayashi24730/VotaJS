@@ -5,6 +5,7 @@ import { Home } from "@/pages/home";
 import { Pesquisar } from "@/pages/pesquisar";
 import { Settings } from "@/pages/settings";
 import { Navbar } from "@/components/navbar";
+import { AuthProvider } from "@/context/AuthContext";
 import './App.css';
 
 function MainLayout() {
@@ -22,15 +23,17 @@ function MainLayout() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<MainLayout />} >
-          <Route path="/" element={<Home />} />
-          <Route path="/pesquisar" element={<Pesquisar />} />
-          <Route path="/settings" element={<Settings />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<MainLayout />} >
+            <Route path="/" element={<Home />} />
+            <Route path="/pesquisar" element={<Pesquisar />} />
+            <Route path="/settings" element={<Settings />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   )
 }
 

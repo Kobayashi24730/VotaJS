@@ -5,9 +5,11 @@ import { Cards } from "@/components/cards";
 import { usePolls } from "@/hooks/usePolls";
 import { ModalFilters } from "@/components/modals/modalFilters";
 import { filtered } from "@/utils/filters";
+import { ModalCreate } from "@/components/modals/modalCreate";
 export function Enquetes(){
     const { polls, loading, fetchPolls, error } = usePolls();
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
     const [activeFilter, setActiveFilter] = useState({
         category: "",
         voteRange: "Todos",
@@ -24,6 +26,10 @@ export function Enquetes(){
         setActiveFilter(filters);
         setModalIsOpen(false);
     }
+
+    const handleCreatePoll = (newPollData) => {
+        setIsOpenCreateModal(false);
+    }
     return(
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-8">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-slate-200">
@@ -36,10 +42,18 @@ export function Enquetes(){
                     </p>
                 </div>
 
-                <Button className="bg-[#0078d4] hover:bg-[#0063b1] text-white gap-2 font-medium shadow-sm transition-all rounded-md px-5 self-start md:self-auto">
+                <Button variant="outline" onClick={() => setIsOpenCreateModal(true)} className="bg-[#0078d4] hover:bg-[#0063b1] text-white gap-2 font-medium shadow-sm transition-all rounded-md px-5 self-start md:self-auto">
                     <Plus className="h-4 w-4" />
                     Criar Enquete
                 </Button>
+
+                {isOpenCreateModal && (
+                    <ModalCreate
+                        isOpen={isOpenCreateModal}
+                        onClose={() => setIsOpenCreateModal(false)}
+                        onConfirm={handleCreatePoll}
+                    />
+                )}
             </div>
 
             {/* Barra de Busca e Filtros */}
