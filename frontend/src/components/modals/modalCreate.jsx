@@ -1,22 +1,12 @@
 import React, { useState } from "react";
 
-export function ModalCreate({ isOpen, onClose, onApplyFilters }) {
+export function ModalCreate({ isOpen, onClose, onConfirm }) {
   const [category, setCategory] = useState("");
   const [voteRange, setVoteRange] = useState("Todos");
   const [sortBy, setSortBy] = useState("newest");
 
   if (!isOpen) return null;
 
-  const handleApplyFilters = () => {
-    onApplyFilters({ category, voteRange, sortBy });
-    onClose();
-  };
-
-  const handleResetFilters = () => {
-    setCategory("");
-    setVoteRange("Todos");
-    setSortBy("newest");
-  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs">
@@ -96,13 +86,13 @@ export function ModalCreate({ isOpen, onClose, onApplyFilters }) {
         {/* Ações */}
         <div className="mt-6 flex justify-end space-x-3 border-t border-slate-100 pt-4">
           <button
-            onClick={handleResetFilters}
+            onClick={onConfirm}
             className="rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
           >
             Limpar Filtros
           </button>
           <button
-            onClick={handleApplyFilters}
+            onClick={onConfirm}
             className="rounded-md bg-[#0078d4] px-4 py-2 text-sm font-medium text-white hover:bg-[#0063b1] transition-colors"
           >
             Aplicar Filtros

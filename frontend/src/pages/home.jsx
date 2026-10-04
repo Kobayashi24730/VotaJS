@@ -87,7 +87,7 @@ export function Home() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="flex flex-wrap gap-4 pt-2"
             >
-              <Button size="lg" onClick={() => setIsOpenCreateModal(true)} className="gap-2 font-medium bg-[#0078d4] hover:bg-[#0063b1] text-white shadow-md hover:shadow-lg transition-all rounded-md px-6">
+              <Button size="lg" variant="outline" onClick={() => setIsOpenCreateModal(true)} className="gap-2 font-medium bg-[#0078d4] hover:bg-[#0063b1] text-white shadow-md hover:shadow-lg transition-all rounded-md px-6">
                 Criar Enquete
                 <ArrowRight className="h-4 w-4" />
               </Button>
