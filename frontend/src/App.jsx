@@ -31,11 +31,11 @@ function App() {
           <Route element={<MainLayout />} >
             <Route path="/" element={<Home />} />
             <Route path="/pesquisar" element={<Pesquisar />} />
-            <Route path="/auth" element={<Auth />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/settings" element={<Settings />} />
             </Route>
           </Route>
+          <Route path="/auth" element={<Auth />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
