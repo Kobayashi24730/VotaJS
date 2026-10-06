@@ -14,16 +14,22 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { AnimateSections } from "@/components/animateSections";
 
-const authSchema = z.object({
-  name: z.string().min(2, { message: "O nome deve ter no mínimo 2 caracteres." }),
+const loginSchema = z.object({
   email: z.string().email({ message: "Email inválido." }),
   password: z.string().min(6, { message: "A senha deve ter no mínimo 6 caracteres." }),
 });
 
+const registerSchema = z.object({
+  name: z.string().min(2, { message: "O nome deve ter no mínimo 2 caracteres." }),
+  email: z.string().email({ message: "Email inválido." }),
+  password: z.string().min(6, { message: "A senha deve ter no mínimo 6 caracteres." }),
+})
+
 export function Auth() {
   const [isFormType, setIsFormType] = useState("login");
+  const currentFormSchema = isFormType === "login" ? loginSchema : registerSchema;
   const form = useForm({
-    resolver: zodResolver(authSchema),
+    resolver: zodResolver(currentFormSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -31,6 +37,10 @@ export function Auth() {
     },
   });
 
+  const togleFormType = () => {
+    const formType = isFormType === "login" ? "register" : "login";
+    return setIsFormType(formType);
+  }
   const onSubmit = async (data) => {
     console.log("Dados de login:", data);
   };
@@ -48,10 +58,11 @@ export function Auth() {
             </div>
 
             <div className="my-auto py-6">
-              <h3 className="text-2xl font-bold text-slate-900">Bem-vindo!</h3>
+              <h3 className="text-2xl font-bold text-slate-900">{isFormType === "login" ? "Bem-vindo!" : "Crie sua conta"}</h3>
               <p className="mt-2 text-sm text-slate-500">
-                Para continuar, faça login e comece a votar em enquetes
-                imperdíveis.
+                {isFormType === "login"
+                  ? "Para continuar, faça login e comece a votar em enquetes imperdíveis."
+                  : "Preencha os dados abaixo para se cadastrar na plataforma."}
               </p>
 
               <Form {...form}>
@@ -59,25 +70,27 @@ export function Auth() {
                   onSubmit={form.handleSubmit(onSubmit)}
                   className="mt-6 space-y-4"
                 >
-                  <FormField
-                    name="name"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-slate-700">
-                          Seu Nome
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Informe seu nome"
-                            className="h-11 bg-slate-50 border-slate-200 focus-visible:ring-[#0078d4]"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  {isFormType === "register" && (  
+                    <FormField
+                      name="name"
+                      control={form.control}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-slate-700">
+                            Seu Nome
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Informe seu nome"
+                              className="h-11 bg-slate-50 border-slate-200 focus-visible:ring-[#0078d4]"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
                   <FormField
                     name="email"
                     control={form.control}
@@ -96,27 +109,24 @@ export function Auth() {
                       </FormItem>
                     )}
                   />
-
-                  {isFormType != "login" && (
-                    <FormField
-                      name="password"
-                      control={form.control}
-                      render={({ field }) => (
-                        <FormItem>
-                            <FormLabel className="text-slate-700">Senha</FormLabel>
-                            <FormControl>
-                                <Input
-                                    type="password"
-                                    placeholder="Informe sua senha"
-                                    className="h-11 bg-slate-50 border-slate-200 focus-visible:ring-[#0078d4]"
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  )}
+                  <FormField
+                    name="password"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                          <FormLabel className="text-slate-700">Senha</FormLabel>
+                          <FormControl>
+                              <Input
+                                  type="password"
+                                  placeholder="Informe sua senha"
+                                  className="h-11 bg-slate-50 border-slate-200 focus-visible:ring-[#0078d4]"
+                                  {...field}
+                              />
+                          </FormControl>
+                          <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
                   <Button
                     type="submit"
@@ -146,17 +156,26 @@ export function Auth() {
 
               <div className="space-y-2">
                 <h2 className="text-2xl font-bold leading-snug">
-                  Não tem uma <span className="text-[#0078d4]">Conta</span>?
+                  {isFormType === "login" ? (
+                    <>
+                      Não tem uma <span className="text-[#0078d4]">Conta</span>?
+                    </>
+                  ) : (
+                    <>
+                      Já possui uma <span className="text-[#0078d4]">Conta</span>?
+                    </>
+                  )}
                 </h2>
                 <p className="text-sm text-slate-300">
-                  Faça seu registro agora mesmo e participe das votações em
-                  tempo real.
+                  {isFormType === "login" 
+                    ? "Faça seu registro agora mesmo e participe das votações em tempo real."
+                    : "Acesse sua conta para ver suas enquetes e votos guardados."}
                 </p>
               </div>
 
               <Button
                 variant="outline"
-                onClick={() => setIsFormType(!isFormType)}
+                onClick={() => togleFormType()}
                 className="mt-2 border-white/20 bg-white/10 text-white hover:bg-white hover:text-slate-900 transition-all"
               >
                 {isFormType === "login" ? "Criar Conta" : "Fazar Login"}
