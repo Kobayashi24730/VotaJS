@@ -13,6 +13,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { AnimateSections } from "@/components/animateSections";
+import loginImg from "@/assets/login.jpg";
+import registerImg from "@/assets/register.jpg";
+import votaLogo from "@/assets/votaLogo.svg";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Email inválido." }),
@@ -37,7 +40,7 @@ export function Auth() {
     },
   });
 
-  const togleFormType = () => {
+  const toggleFormType = () => {
     const formType = isFormType === "login" ? "register" : "login";
     return setIsFormType(formType);
   }
@@ -49,9 +52,9 @@ export function Auth() {
     <div className="flex min-h-screen w-full items-center justify-center bg-slate-100 p-4 sm:p-6">
       <AnimateSections delay={0.3}>
         <div className="flex w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-xl border border-slate-100 min-h-[550px]">
-          <div className="flex w-full flex-col justify-between p-8 md:w-1/2 lg:p-12">s
+          <div className="flex w-full flex-col justify-between p-8 md:w-1/2 lg:p-12">
             <div className="flex items-center gap-2">
-              <img src="/logo.svg" alt="Logo VotaJs" className="h-8 w-8" />
+              <img src={votaLogo} alt="Logo VotaJs" className="h-8 w-8" />
               <h2 className="text-xl font-bold text-slate-900">
                 Vota<span className="text-[#0078d4]">Js</span>
               </h2>
@@ -65,6 +68,7 @@ export function Auth() {
                   : "Preencha os dados abaixo para se cadastrar na plataforma."}
               </p>
 
+              {/* Form base com a ui form do shadcn */}
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
@@ -144,44 +148,47 @@ export function Auth() {
             </p>
           </div>
 
-          <div className="hidden md:flex md:w-1/2 flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 p-8 text-white text-center relative overflow-hidden">
-            <div className="absolute top-0 right-0 -mt-12 -mr-12 w-64 h-64 bg-[#0078d4]/20 rounded-full blur-3xl pointer-events-none" />
+          <div className="hidden md:flex md:w-1/2 flex-col items-center justify-center p-8 text-white text-center relative overflow-hidden">
+          {/* Imagem de fundo cobrindo toda a div */}
+          <img
+            src={isFormType === "login" ? loginImg : registerImg}
+            alt="Fundo VotaJs"
+            className="absolute inset-0 h-full w-full object-cover object-center"
+          />
 
-            <div className="relative z-10 flex flex-col items-center gap-6 max-w-sm">
-              <img
-                src="/logo.svg"
-                alt="Ilustração VotaJs"
-                className="w-32 h-32 drop-shadow-lg"
-              />
+          {/* Overlay escuro com gradiente para garantir contraste e legibilidade */}
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/70 to-slate-900/40" />
 
-              <div className="space-y-2">
-                <h2 className="text-2xl font-bold leading-snug">
-                  {isFormType === "login" ? (
-                    <>
-                      Não tem uma <span className="text-[#0078d4]">Conta</span>?
-                    </>
-                  ) : (
-                    <>
-                      Já possui uma <span className="text-[#0078d4]">Conta</span>?
-                    </>
-                  )}
-                </h2>
-                <p className="text-sm text-slate-300">
-                  {isFormType === "login" 
-                    ? "Faça seu registro agora mesmo e participe das votações em tempo real."
-                    : "Acesse sua conta para ver suas enquetes e votos guardados."}
-                </p>
-              </div>
-
-              <Button
-                variant="outline"
-                onClick={() => togleFormType()}
-                className="mt-2 border-white/20 bg-white/10 text-white hover:bg-white hover:text-slate-900 transition-all"
-              >
-                {isFormType === "login" ? "Criar Conta" : "Fazar Login"}
-              </Button>
+          {/* Conteudo sobre a imagem */}
+          <div className="relative z-10 flex flex-col items-center gap-6 max-w-sm">
+            <div className="space-y-2">
+              <h2 className="text-2xl font-bold leading-snug text-white drop-shadow-sm">
+                {isFormType === "login" ? (
+                  <>
+                    Não tem uma <span className="text-[#0078d4]">Conta</span>?
+                  </>
+                ) : (
+                  <>
+                    Já possui uma <span className="text-[#0078d4]">Conta</span>?
+                  </>
+                )}
+              </h2>
+              <p className="text-sm text-slate-200 drop-shadow-sm">
+                {isFormType === "login" 
+                  ? "Faça seu registro agora mesmo e participe das votações em tempo real."
+                  : "Acesse sua conta para ver suas enquetes e votos guardados."}
+              </p>
             </div>
+
+            <Button
+              variant="outline"
+              onClick={() => toggleFormType()}
+              className="mt-2 border-white/30 bg-white/10 text-white backdrop-blur-md hover:bg-white hover:text-slate-900 transition-all shadow-lg"
+            >
+              {isFormType === "login" ? "Criar Conta" : "Fazer Login"}
+            </Button>
           </div>
+        </div>
         </div>
       </AnimateSections>
     </div>

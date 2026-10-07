@@ -1,7 +1,6 @@
 import { Calendar, Home, Inbox, Search, Settings, Vote, LogOut, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-
 import {
   Sidebar,
   SidebarContent,
@@ -13,7 +12,8 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import votaLogo from "@/assets/votaLogo.svg"
 
 const items = [
   { title: "Home", url: "/", icon: Home },
@@ -37,9 +37,9 @@ export function Navbar() {
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.3 }}
-            className="flex h-9 w-9 items-center justify-center rounded-md bg-[#0078d4] text-white shadow-sm transition-transform group-hover:scale-105"
+            className="flex h-9 w-9 items-center justify-center rounded-md bg-transparent text-white shadow-sm transition-transform group-hover:scale-105"
           >
-            <Vote className="h-5 w-5" />
+            <img src={votaLogo} alt="Logo VotaJs" className="h-8 w-8" />
           </motion.div>
           <div className="flex flex-col">
             <span className="font-semibold text-base tracking-tight leading-none text-slate-900">

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
+  <defs>
+    <!-- Gradiente do Sinal de Marcado / Check -->
+    <linearGradient id="checkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0078d4" />
+      <stop offset="100%" stop-color="#005a9e" />
+    </linearGradient>
+    
+    <!-- Sombra suave para o card da enquete -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.12" />
+    </filter>
+  </defs>
+
+  <!-- === ÍCONE: ENQUETE COM SINAL DE MARCADO === -->
+  <g transform="translate(8, 8)">
+    <!-- Base da Enquete (Opções em segundo plano) -->
+    <rect x="10" y="18" width="48" height="48" rx="12" fill="#f1f5f9" filter="url(#shadow)" />
+    
+    <!-- Linhas que simulam as opções da enquete não selecionadas -->
+    <rect x="20" y="44" width="28" height="4" rx="2" fill="#cbd5e1" />
+    <rect x="20" y="52" width="18" height="4" rx="2" fill="#e2e8f0" />
+
+    <!-- Card de topo assinalado (Opção Marcada) -->
+    <rect x="14" y="10" width="44" height="28" rx="8" fill="#e0f2fe" stroke="#0078d4" stroke-width="2" />
+
+    <!-- Círculo do Check / Concluído -->
+    <circle cx="36" cy="24" r="14" fill="url(#checkGrad)" filter="url(#shadow)" />
+
+    <!-- Sinal de Visto / Marcado (Checkmark) -->
+    <path d="M29 24L34 29L43 19" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+</svg>
