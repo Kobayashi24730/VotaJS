@@ -3,6 +3,8 @@ package com.votajs.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+//? DTO para autenticar e registrar um novo usuario.
 public record RegisterDTO(
     @NotBlank(message = "O nome e obrigatorio.")    
     String nome,
