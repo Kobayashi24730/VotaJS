@@ -16,6 +16,8 @@ import { AnimateSections } from "@/components/animateSections";
 import loginImg from "@/assets/login.jpg";
 import registerImg from "@/assets/register.jpg";
 import votaLogo from "@/assets/votaLogo.svg";
+import { useAuth } from "@/context/AuthContext";
+import { toast } from "sonner";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Email inválido." }),
@@ -30,6 +32,7 @@ const registerSchema = z.object({
 
 export function Auth() {
   const [isFormType, setIsFormType] = useState("login");
+  const { login, register } = useAuth();
   const currentFormSchema = isFormType === "login" ? loginSchema : registerSchema;
   const form = useForm({
     resolver: zodResolver(currentFormSchema),
@@ -41,11 +44,18 @@ export function Auth() {
   });
 
   const toggleFormType = () => {
-    const formType = isFormType === "login" ? "register" : "login";
-    return setIsFormType(formType);
+    const nextFormType = isFormType === "login" ? "register" : "login";
+    setIsFormType(nextFormType);
+    form.reset({ name: "", email: "", password: "" });
   }
   const onSubmit = async (data) => {
-    console.log("Dados de login:", data);
+    if (isFormType === "login") {
+      login(data.email, data.password);
+      toast.success("Login efetuado com sucesso!");
+    } else if (isFormType === "register") {
+      register(data.name, data.email, data.password);
+      toast.success("Cadastro efetuado com sucesso!");
+    }
   };
 
   return (

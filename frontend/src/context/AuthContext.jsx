@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { api } from "@/api/api";
+import { locales } from "zod";
 
 const AuthContext = createContext();
 
@@ -34,6 +35,16 @@ export function AuthProvider({children}) {
         }
     }
 
+    const register = async (nome,email,password) => {
+        try {
+            const response = await api.post("auth/register", {nome, email, password});
+            const res = response.data;
+            return {success: true, message: res.message}
+        } catch (err) {
+            return {success: false, message: err.response?.data?.message || "Erro no cadastro"}
+        }
+    }
+
     const logout = () => {
         setUser(null);
         localStorage.removeItem("@App:token");
@@ -46,6 +57,7 @@ export function AuthProvider({children}) {
             user,
             loading,
             login,
+            register,
             logout,
          }}>
             {children}

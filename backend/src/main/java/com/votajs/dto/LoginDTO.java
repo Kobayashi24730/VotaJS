@@ -6,9 +6,6 @@ import jakarta.validation.constraints.Size;
 
 //? DTO para autenticar e logar o usuario.
 public record LoginDTO(
-    @NotBlank(message = "O email e obrigatorio.")
-    String nome,
-
     @NotBlank(message = "A senha e obrigatorio.")
     @Email(message = "Email inválido.")
     String email,

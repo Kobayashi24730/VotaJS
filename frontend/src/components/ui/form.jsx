@@ -1,10 +1,9 @@
 import * as React from "react"
-import { useFormContext, Controller } from "react-hook-form"
+import { FormProvider, Controller } from "react-hook-form"
 
-const Form = ({ children, ...props }) => {
-  return <form {...props}>{children}</form>
+const Form = ({ ...props }) => {
+  return <FormProvider {...props} />
 }
-
 const FormField = ({ ...props }) => {
   return <Controller {...props} />
 }
