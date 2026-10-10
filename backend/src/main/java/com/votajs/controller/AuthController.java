@@ -2,7 +2,12 @@ package com.votajs.controller;
 
 import com.votajs.model.Poll;
 import com.votajs.service.PollService;
-
+import com.votajs.service.TokenService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import com.votajs.service.UserService;
+import jakarta.validation.Valid;
+import com.votajs.dto.RegisterDTO;
+import com.votajs.dto.LoginDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +27,12 @@ public class AuthController {
     private TokenService tokenService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterDto user) {
-
+    public ResponseEntity<String> register(@RequestBody @Valid RegisterDTO user) {
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> Login(@RequestBody  LoginDto user) {
-        
+    public ResponseEntity<String> Login(@RequestBody @Valid LoginDTO user) {
+        return ResponseEntity.ok().build();
     }
 }
