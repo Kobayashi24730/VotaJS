@@ -13,17 +13,17 @@ import {
 } from "@/components/ui/form";
 import { AnimateSections } from "@/components/animateSections";
 import { useAuth } from "@/context/AuthContext";
+import { toast } from "sonner";
 
 export function Settings() {
-  const { user, loading } = useAuth();
+  const { user, loading, logout: authLogout } = useAuth();
   const form = useForm({
     defaultValues: {
       NomeCompleto: user?.nome || user?.email || "undefined",
       email: user?.email || "undefined",
     },
   });
-  const [newEmail, setNewEmail] = useState("");
-  const [newNome, setNewNome] = useState("");
+  const {isDirty} = form.formState;
 
   const onSubmitInfos = async (dados) => {
     if (loading) {
@@ -36,27 +36,53 @@ export function Settings() {
 
     const response = await update(dados.email);
     if (response.success) {
-      toast.success("Informações atualizadas com sucesso!");
+      toast.add({
+        title: "Sucesso",
+        description: "Informações atualizadas com sucesso!",
+        type: "success",
+      });
+      form.reset(dados); //? reseta com os novos dados.
     } else {
-      toast.error(response.message);
+      toast.add({
+        title: "Error",
+        description: error.response?.data?.message || "Erro ao atualizar.",
+        type: "error",
+      });
     }
   };
 
   const deleteAccount = async () => {
     const response = await remove();
     if (response.success) {
-      toast.success("Informações atualizadas com sucesso!");
+      toast.add({
+        title: "sucess",
+        description: "Conta deletada com sucesso!",
+        type: "success",
+      });
     } else {
-      toast.error(response.message);
+      toast.add({
+        title: "Error",
+        description: error.response?.data?.message || "Erro ao deletar conta.",
+        type: "error",
+      });
     }
   };
 
   const logout = async () => {
-    const response = await logout();
+    const response = await authLogout();
     if (response.success) {
-      toast.success("Informações atualizadas com sucesso!");
+      toast.add({
+        title: "sucess",
+        description: "Deslogado com sucesso!",
+        type: "success",
+      });
+      navigate("/auth");
     } else {
-      toast.error(response.message);
+      toast.add({
+        title: "Error",
+        description: error.response?.data?.message || "Erro ao deslogar.",
+        type: "error",
+      });
     }
   };
 
@@ -125,6 +151,7 @@ export function Settings() {
                   <Button
                     type="submit"
                     size="sm"
+                    disabled={!isDirty}
                     className="bg-slate-600 hover:bg-slate-700 text-white font-medium rounded-lg px-4"
                     onClick={() => onSubmitInfos(setNewNome)}
                   >
@@ -135,6 +162,7 @@ export function Settings() {
                     variant="outline"
                     size="sm"
                     className="border-slate-300 text-slate-600 font-medium rounded-lg px-4"
+                    onClick={() => form.reset()}
                   >
                     Cancelar
                   </Button>
@@ -210,7 +238,7 @@ export function Settings() {
               type="button"
               variant="outline"
               className="border-red-300 text-red-600 hover:bg-red-50 hover:text-red-700 rounded-lg font-medium"
-              onClick={() => Logout()}
+              onClick={() => logout()}
             >
               Logout
             </Button>

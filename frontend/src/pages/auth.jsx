@@ -59,7 +59,7 @@ export function Auth() {
     } else if (isFormType === "register") {
       const result = await register(data.name, data.email, data.password);
       if (result.success) {
-        toast.success("Cadastro efetuado com sucesso!");
+        toast.success("Conta criada com sucesso!");
         setIsFormType("login");
         navigate("/auth");
       }
