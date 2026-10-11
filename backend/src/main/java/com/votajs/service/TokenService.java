@@ -37,7 +37,6 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
-
                     .withIssuer("votajs-api")
                     .build()
                     .verify(token)
@@ -49,7 +48,7 @@ public class TokenService {
 
     //? funcão instant para gerar a data de expiração usada no JWT.create la no generateToken.
     public Instant genExpirationDate() {
-        return LocalDateTime.now().plusSeconds(2).toInstant(ZoneOffset.of("-03:00")); //? Ajustat conforme o fuso horario.
+        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00")); //? Ajustat conforme o fuso horario.
     }
 
 }

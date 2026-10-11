@@ -10,17 +10,22 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import com.votajs.config.SecurityFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Configuration
 @EnableWebSecurity
 //? Configuracoes de seguranca
 public class WebConfig {
+
+    @Autowired
+    SecurityFilter securityFilter;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/auth/**").permitAll().anyRequest().authenticated()).build(); // Libera as rotas de login/registro
+            .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/auth/**", "/api/polls/**").permitAll().anyRequest().authenticated()).build(); // Libera as rotas de login/registro
     }
 
     @Bean

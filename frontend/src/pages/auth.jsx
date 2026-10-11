@@ -8,8 +8,7 @@ import {
   FormItem,
   FormLabel,
   FormControl,
-  FormMessage,
-} from "@/components/ui/form";
+  FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { AnimateSections } from "@/components/animateSections";
@@ -18,6 +17,7 @@ import registerImg from "@/assets/register.jpg";
 import votaLogo from "@/assets/votaLogo.svg";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Email inválido." }),
@@ -34,6 +34,7 @@ export function Auth() {
   const [isFormType, setIsFormType] = useState("login");
   const { login, register } = useAuth();
   const currentFormSchema = isFormType === "login" ? loginSchema : registerSchema;
+  const navigate = useNavigate();
   const form = useForm({
     resolver: zodResolver(currentFormSchema),
     defaultValues: {
@@ -50,11 +51,18 @@ export function Auth() {
   }
   const onSubmit = async (data) => {
     if (isFormType === "login") {
-      login(data.email, data.password);
-      toast.success("Login efetuado com sucesso!");
+      const result = await login(data.email, data.password);
+      if (result.success) {
+        toast.success("Login efetuado com sucesso!");
+        navigate("/");
+      }
     } else if (isFormType === "register") {
-      register(data.name, data.email, data.password);
-      toast.success("Cadastro efetuado com sucesso!");
+      const result = await register(data.name, data.email, data.password);
+      if (result.success) {
+        toast.success("Cadastro efetuado com sucesso!");
+        setIsFormType("login");
+        navigate("/auth");
+      }
     }
   };
 

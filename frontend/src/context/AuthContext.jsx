@@ -13,9 +13,17 @@ export function AuthProvider({children}) {
         const token = localStorage.getItem("@App:token");
         const user = localStorage.getItem("@App:user");
 
-        if (token && user) {
-            setUser(JSON.parse(user));
-            api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        if (token && user &&  user !== "undefined" && user !== "null") {
+            try {
+                setUser(JSON.parse(user));
+                api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+            } catch (error) {
+                localStorage.removeItem("@App:token");
+                localStorage.removeItem("@App:user");
+            }
+        } else {
+                localStorage.removeItem("@App:token");
+                localStorage.removeItem("@App:user");
         }
         setLoading(false);
     }, []);
@@ -24,10 +32,11 @@ export function AuthProvider({children}) {
         try {
             const response = await api.post("auth/login", {email, password});
             const { user, token } = response.data;
-            setUser(user);
+            const userData = user || { email };
+            setUser(userData);
 
             localStorage.setItem("@App:token", token);
-            localStorage.setItem("@App:user", JSON.stringify(user));
+            localStorage.setItem("@App:user", JSON.stringify(userData));
             api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
             return {success: true}
         } catch (error) {
