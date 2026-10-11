@@ -9,6 +9,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import './App.css';
 import { ProtectedRoute } from "@/components/protectedRoute";
 import { Auth } from "@/pages/auth";
+import { Toaster } from "@/components/ui/toast";
 
 function MainLayout() {
   return (
@@ -37,6 +38,7 @@ function App() {
           </Route>
           <Route path="/auth" element={<Auth />} />
         </Routes>
+        <Toaster richColors position="top-right" />
       </BrowserRouter>
     </AuthProvider>
   )

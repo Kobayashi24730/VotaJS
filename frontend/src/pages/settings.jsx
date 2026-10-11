@@ -1,9 +1,8 @@
-import React from "react"
-import { useForm } from "react-hook-form"
-import { Upload, Trash2 } from "lucide-react"
-
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Upload, Trash2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -11,16 +10,55 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { AnimateSections } from "@/components/animateSections"
+} from "@/components/ui/form";
+import { AnimateSections } from "@/components/animateSections";
+import { useAuth } from "@/context/AuthContext";
 
 export function Settings() {
+  const { user, loading } = useAuth();
   const form = useForm({
     defaultValues: {
-      NomeCompleto: "Nome incluir",
-      email: "Nome.incluir@nexacrm.app",
+      NomeCompleto: user?.nome || user?.email || "undefined",
+      email: user?.email || "undefined",
     },
-  })
+  });
+  const [newEmail, setNewEmail] = useState("");
+  const [newNome, setNewNome] = useState("");
+
+  const onSubmitInfos = async (dados) => {
+    if (loading) {
+      return (
+        <>
+          <h1>Carregando...</h1>
+        </>
+      );
+    }
+
+    const response = await update(dados.email);
+    if (response.success) {
+      toast.success("Informações atualizadas com sucesso!");
+    } else {
+      toast.error(response.message);
+    }
+  };
+
+  const deleteAccount = async () => {
+    const response = await remove();
+    if (response.success) {
+      toast.success("Informações atualizadas com sucesso!");
+    } else {
+      toast.error(response.message);
+    }
+  };
+
+  const logout = async () => {
+    const response = await logout();
+    if (response.success) {
+      toast.success("Informações atualizadas com sucesso!");
+    } else {
+      toast.error(response.message);
+    }
+  };
 
   return (
     <div className="w-full max-w-4xl mx-auto p-6 space-y-6 bg-slate-50/50 min-h-screen">
@@ -88,6 +126,7 @@ export function Settings() {
                     type="submit"
                     size="sm"
                     className="bg-slate-600 hover:bg-slate-700 text-white font-medium rounded-lg px-4"
+                    onClick={() => onSubmitInfos(setNewNome)}
                   >
                     Salvar alterações
                   </Button>
@@ -152,19 +191,28 @@ export function Settings() {
       <AnimateSections delay={0.3}>
         <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-2xs space-y-4">
           <div>
-            <h3 className="text-base font-semibold text-slate-900">Zona para deletar conta</h3>
+            <h3 className="text-base font-semibold text-slate-900">Zona para deletar ou deslogar a conta</h3>
             <p className="text-sm text-slate-500">
-              Delete sua conta e todos os seus dados
+              Delete ou deslogue sua conta e todos os seus dados
             </p>
           </div>
 
-          <div>
+          <div className="flex gap-2">
             <Button
               type="button"
               variant="outline"
               className="border-red-300 text-red-600 hover:bg-red-50 hover:text-red-700 rounded-lg font-medium"
+              onClick={() => deleteAccount()}
             >
               Deletar conta
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              className="border-red-300 text-red-600 hover:bg-red-50 hover:text-red-700 rounded-lg font-medium"
+              onClick={() => Logout()}
+            >
+              Logout
             </Button>
           </div>
         </div>
