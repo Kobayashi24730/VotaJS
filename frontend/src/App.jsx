@@ -9,7 +9,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import './App.css';
 import { ProtectedRoute } from "@/components/protectedRoute";
 import { Auth } from "@/pages/auth";
-import { Toaster } from "@/components/ui/toast";
+import { Toaster } from "sonner";
 
 function MainLayout() {
   return (

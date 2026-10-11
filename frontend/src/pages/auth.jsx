@@ -55,6 +55,8 @@ export function Auth() {
       if (result.success) {
         toast.success("Login efetuado com sucesso!");
         navigate("/");
+      } else {
+        toast.error("Email ou senha incorretos.");
       }
     } else if (isFormType === "register") {
       const result = await register(data.name, data.email, data.password);
@@ -62,6 +64,8 @@ export function Auth() {
         toast.success("Conta criada com sucesso!");
         setIsFormType("login");
         navigate("/auth");
+      } else {
+        toast.error("Essa conta ja existe.");
       }
     }
   };
