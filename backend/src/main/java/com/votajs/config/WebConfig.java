@@ -10,7 +10,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import com.votajs.config.SecurityFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Configuration
@@ -19,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class WebConfig {
 
     @Autowired
-    SecurityFilter securityFilter;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
