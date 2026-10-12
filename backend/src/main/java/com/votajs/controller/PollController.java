@@ -42,8 +42,8 @@ public class PollController {
 
     // POST /api/polls/{pollId}/vote -> Registra um voto
     @PostMapping("/{pollId}/vote")
-    public ResponseEntity<Void> vote(@PathVariable Long pollId, @RequestParam Long optionId, @RequestBody VoteRequest request) {
-        pollService.vote(pollId, optionId, request.getEmail());
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Map<String, Object>> vote(@PathVariable Long pollId, @RequestParam Long optionId, @RequestBody VoteRequest request) {
+        Boolean hasVoted = pollService.vote(pollId, optionId, request.getEmail());
+        return ResponseEntity.ok(Map.of("hasVoted", hasVoted));
     }
 }

@@ -41,7 +41,7 @@ public class Poll {
 
     //? Logica para guardar os emails que ja votaram em uma determinada enquete.
     @ElementCollection
+    @CollectionTable(name = "tb_polls_voted_emails", joinColumns = @JoinColumn(name = "poll_id"))
+    @Column(name = "email")
     private Set<String> votedEmails = new HashSet<>();
-    public Set<String> getVoteEmails() { return votedEmails; }
-    public void setVotedEmails(Set<String> votedEmails) { this.votedEmails = votedEmails; }
 }

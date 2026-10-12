@@ -13,10 +13,12 @@ import {
 } from "@/components/ui/form";
 import { AnimateSections } from "@/components/animateSections";
 import { useAuth } from "@/context/AuthContext";
+import { usePolls } from "@/hooks/usePolls";
 import { toast } from "sonner";
 
 export function Settings() {
   const { user, loading, logout: authLogout } = useAuth();
+  const { polls } = usePolls();
   const form = useForm({
     defaultValues: {
       NomeCompleto: user?.nome || user?.email || "undefined",
@@ -36,53 +38,29 @@ export function Settings() {
 
     const response = await update(dados.email);
     if (response.success) {
-      toast.add({
-        title: "Sucesso",
-        description: "Informações atualizadas com sucesso!",
-        type: "success",
-      });
+      toast.success("Informações atualizadas com sucesso!");
       form.reset(dados); //? reseta com os novos dados.
     } else {
-      toast.add({
-        title: "Error",
-        description: error.response?.data?.message || "Erro ao atualizar.",
-        type: "error",
-      });
+      toast.error("Erro ao atualizar informações.");
     }
   };
 
   const deleteAccount = async () => {
     const response = await remove();
     if (response.success) {
-      toast.add({
-        title: "sucess",
-        description: "Conta deletada com sucesso!",
-        type: "success",
-      });
+      toast.success("Conta deletada com sucesso!");
     } else {
-      toast.add({
-        title: "Error",
-        description: error.response?.data?.message || "Erro ao deletar conta.",
-        type: "error",
-      });
+      toast.error("Erro ao deletar conta.");
     }
   };
 
   const logout = async () => {
     const response = await authLogout();
     if (response.success) {
-      toast.add({
-        title: "sucess",
-        description: "Deslogado com sucesso!",
-        type: "success",
-      });
+      toast.success("Deslogado com sucesso!");
       navigate("/auth");
     } else {
-      toast.add({
-        title: "Error",
-        description: error.response?.data?.message || "Erro ao deslogar.",
-        type: "error",
-      });
+      toast.error("Erro ao deslogar.");
     }
   };
 
@@ -242,6 +220,25 @@ export function Settings() {
             >
               Logout
             </Button>
+          </div>
+        </div>
+      </AnimateSections>
+
+      <AnimateSections delay={0.4}>
+        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-2xs space-y-4">
+          <h2 className="text-base font-semibold text-slate-900">Pequeno cards para o administração do criador dos cards.</h2>
+          <div className="flex max-w-max items-center gap-2 border border-slate-200 rounded-lg p-4">
+            <div>
+              <p className="text-sm text-slate-500">
+                <span className="font-semibold">Card 1:</span>
+              </p>
+              <div>
+                <Button>
+                  Excluir
+                </Button>
+                <Button>Ver mais</Button>
+              </div>
+            </div>
           </div>
         </div>
       </AnimateSections>

@@ -48,12 +48,11 @@ public class PollService {
         Poll poll = getPollById(pollId);
 
         //? Verifica se a lista de email nao e nula.
-        if (poll.getVoteEmails() == null) {
+        if (poll.getVotedEmails() == null) {
             poll.setVotedEmails(new HashSet<>());
         }
-
         //? Se o email ja votou nessa enquete retorna ture.
-        if(poll.getVoteEmails().contains(userEmail)){
+        if(poll.getVotedEmails().contains(userEmail)){
             return true;
         }
 
@@ -62,11 +61,13 @@ public class PollService {
             throw new RuntimeException("Opção nao pertence a essa enquete.");
         }
 
+        //? Parte dos votos.
         option.setVotes(option.getVotes() + 1);
         optionRepository.save(option);
+        poll.setVotesCount(poll.getVotesCount() + 1);
 
         //? Adiciona o email do ultilizador na lista de votos.
-        poll.getVoteEmails().add(userEmail);
+        poll.getVotedEmails().add(userEmail);
         pollRepository.save(poll);
 
         //? para atualizar todos os clients da atualização dos votos.

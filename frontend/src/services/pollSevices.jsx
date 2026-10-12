@@ -20,8 +20,8 @@ export const pollServices = {
         const response = await api.post('/polls', poll);
         return response.data;
     },
-    vote: async (pollId, optionId, user) => {
-        const response = await api.post(`/polls/${pollId}/vote?optionId=${optionId}`, { user: user });
-        return response.data;
+    vote: async (pollId, optionId, email) => {
+        const response = await api.post(`/polls/${pollId}/vote?optionId=${optionId}`, { email: email });
+        return response.data.hasVoted;
     }
 }

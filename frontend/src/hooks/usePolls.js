@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { pollServices } from "@/services/pollSevices";
+import { toast } from "sonner";
 
 export function usePolls() {
     const [polls, setPolls] = useState([]);
@@ -34,12 +35,17 @@ export function usePolls() {
         }
     };
 
-    const submitVote = async (pollId, optionId, user) => {
+    const submitVote = async (pollId, optionId, email) => {
         try {
-            await pollServices.vote(pollId, optionId, user); //? Atualiza imediatamente para o poprio ultilizador.
-            await fetchPolls();
+            const hasVoted = await pollServices.vote(pollId, optionId, email); //? Atualiza imediatamente para o poprio ultilizador.
+            if (hasVoted) {
+                toast.error("Atenção: Você já votou nesta enquete!")
+            } else {
+                toast.success("Voto realizado com sucesso!");
+                await fetchPolls();
+            }
         } catch (err) {
-            throw new Error("Erro ao votar na enquete.");
+            throw new Error(err.response?.data?.message || "Erro ao registar o voto na enquete.");
         }
     };
 

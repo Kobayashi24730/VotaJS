@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { usePolls } from "@/hooks/usePolls";
-
+import { useAuth } from "@/context/AuthContext";
+import { toast } from "sonner";
 export function ModalCreate({ isOpen, onClose }) {
+  const { user, isSigned } = useAuth();
   const { createPoll } = usePolls();
   const [questionCategory, setQuestionCategory] = useState("Tecnologia");
   const [descriptionTitle, setDescriptionTitle] = useState("");
@@ -33,6 +35,7 @@ export function ModalCreate({ isOpen, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSigned) return toast.error("Você precisa estar logado para criar uma enquete.");
     if (!descriptionTitle.trim() || !description.trim()) return;
 
     setIsSubmitting(true);
@@ -40,7 +43,7 @@ export function ModalCreate({ isOpen, onClose }) {
 
     const payload = {
       question: questionCategory,
-      author: "Usuário",
+      author: user?.email || "Unknown",
       descriptionTitle: descriptionTitle,
       description: description,
       options: options
@@ -50,10 +53,11 @@ export function ModalCreate({ isOpen, onClose }) {
 
     try {
       await createPoll(payload);
+      toast.success("Enquete criada com sucesso!");
       resetForm();
       onClose();
     } catch (err) {
-      console.error("Erro ao criar enquete:", err);
+      toast.error("Erro ao criar enquete:", err);
       setErrorMsg("Falha ao criar enquete no servidor.");
     } finally {
       setIsSubmitting(false);
