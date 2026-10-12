@@ -34,9 +34,9 @@ export function usePolls() {
         }
     };
 
-    const submitVote = async (pollId, optionId) => {
+    const submitVote = async (pollId, optionId, user) => {
         try {
-            await pollServices.vote(pollId, optionId); //? Atualiza imediatamente para o poprio ultilizador.
+            await pollServices.vote(pollId, optionId, user); //? Atualiza imediatamente para o poprio ultilizador.
             await fetchPolls();
         } catch (err) {
             throw new Error("Erro ao votar na enquete.");

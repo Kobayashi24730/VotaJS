@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Calendar,  ArrowUpRight, BarChart3 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,9 +10,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { ModalExpanEnquete } from "@/components/modals/modalExpanEnquete";
 
 export function Cards(poll) {
+  const [isOpenExpanEnqueteModal, setIsOpenExpanEnqueteModal] = useState(false);
   const pollFormat = poll.poll;
+
   return (
     <Card className="group relative mx-auto w-full max-w-sm overflow-hidden border border-slate-200/80 bg-white shadow-sm transition-all duration-300 hover:shadow-lg hover:border-slate-300">
       <div className="relative aspect-video w-full overflow-hidden bg-slate-100">
@@ -53,11 +57,13 @@ export function Cards(poll) {
       </CardContent>
 
       <CardFooter className="p-5 pt-3">
-        <Button className="w-full gap-2 bg-[#0078d4] hover:bg-[#0063b1] text-white font-medium shadow-xs transition-all">
+        <Button onClick={() => setIsOpenExpanEnqueteModal(!isOpenExpanEnqueteModal)} className="w-full gap-2 bg-[#0078d4] hover:bg-[#0063b1] text-white font-medium shadow-xs transition-all">
           <span>Participar da Enquete</span>
           <ArrowUpRight className="h-4 w-4" />
         </Button>
       </CardFooter>
+
+      {isOpenExpanEnqueteModal && <ModalExpanEnquete poll={pollFormat} isOpen={setIsOpenExpanEnqueteModal} onClose={() => setIsOpenExpanEnqueteModal(false)} />}
     </Card>
   );
 }

@@ -7,9 +7,8 @@ import com.votajs.repository.PollRepository;
 import com.votajs.controller.PollStreamController;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.util.HashSet;
 import java.util.List;
-
 import javax.management.RuntimeMBeanException;
 
 @Service
@@ -45,17 +44,34 @@ public class PollService {
     }
 
     @Transactional
-    public void vote(Long pollId, Long optionId) {
+    public boolean vote(Long pollId, Long optionId, String userEmail) {
         Poll poll = getPollById(pollId);
+
+        //? Verifica se a lista de email nao e nula.
+        if (poll.getVoteEmails() == null) {
+            poll.setVotedEmails(new HashSet<>());
+        }
+
+        //? Se o email ja votou nessa enquete retorna ture.
+        if(poll.getVoteEmails().contains(userEmail)){
+            return true;
+        }
+
         Option option = optionRepository.findById(optionId).orElseThrow(()  -> new RuntimeException("Opção nao encontrada."));
         if (!option.getPoll().getId().equals(poll.getId())) {
             throw new RuntimeException("Opção nao pertence a essa enquete.");
         }
+
         option.setVotes(option.getVotes() + 1);
         optionRepository.save(option);
+
+        //? Adiciona o email do ultilizador na lista de votos.
+        poll.getVoteEmails().add(userEmail);
+        pollRepository.save(poll);
 
         //? para atualizar todos os clients da atualização dos votos.
         Poll updatePoll = getPollById(pollId);
         pollStreamController.notifyAllClients(updatePoll);
+        return false; //? retorna false para o front saber que o voto foi contabilizado.
     }
 }

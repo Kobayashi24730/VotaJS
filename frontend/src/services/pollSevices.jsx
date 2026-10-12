@@ -1,5 +1,12 @@
 import { api } from "@/api/api";
 
+api.interceptors.request.use((config) => {
+    const token = localStorage.getItem('@App:token');
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
 export const pollServices = {
     getAllPolls: async () => {
         const response = await api.get('/polls');
@@ -13,8 +20,8 @@ export const pollServices = {
         const response = await api.post('/polls', poll);
         return response.data;
     },
-    vote: async (pollId, optionId) => {
-        const response = await api.post(`/polls/${pollId}/vote`, {optionId});
+    vote: async (pollId, optionId, user) => {
+        const response = await api.post(`/polls/${pollId}/vote?optionId=${optionId}`, { user: user });
         return response.data;
     }
 }

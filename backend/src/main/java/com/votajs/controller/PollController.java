@@ -1,5 +1,6 @@
 package com.votajs.controller;
 
+import com.votajs.dto.VoteRequest;
 import com.votajs.model.Poll;
 import com.votajs.service.PollService;
 import org.springframework.http.HttpStatus;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/polls")
@@ -25,7 +27,7 @@ public class PollController {
         return ResponseEntity.ok(pollService.getAllPolls());
     }
 
-    // GET /api/polls/{id} -> Busca uma enquete pelo id
+        // GET /api/polls/{id} -> Busca uma enquete pelo id
     @GetMapping("/{id}")
     public ResponseEntity<Poll> getPollById(@PathVariable Long id) {
         return ResponseEntity.ok(pollService.getPollById(id));
@@ -40,8 +42,8 @@ public class PollController {
 
     // POST /api/polls/{pollId}/vote -> Registra um voto
     @PostMapping("/{pollId}/vote")
-    public ResponseEntity<Void> vote(@PathVariable Long pollId, @RequestParam Long optionId) {
-        pollService.vote(pollId, optionId);
+    public ResponseEntity<Void> vote(@PathVariable Long pollId, @RequestParam Long optionId, @RequestBody VoteRequest request) {
+        pollService.vote(pollId, optionId, request.getEmail());
         return ResponseEntity.ok().build();
     }
 }

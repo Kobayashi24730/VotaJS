@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.ArrayList;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -36,4 +38,10 @@ public class Poll {
 
     @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Option> options = new ArrayList<>();
+
+    //? Logica para guardar os emails que ja votaram em uma determinada enquete.
+    @ElementCollection
+    private Set<String> votedEmails = new HashSet<>();
+    public Set<String> getVoteEmails() { return votedEmails; }
+    public void setVotedEmails(Set<String> votedEmails) { this.votedEmails = votedEmails; }
 }
