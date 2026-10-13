@@ -1,12 +1,12 @@
 package com.votajs.controller;
 
-import com.votajs.dto.VoteRequest;
+import com.votajs.dto.PollCreateDTO;
+import com.votajs.dto.VoteDTO;
 import com.votajs.model.Poll;
 import com.votajs.service.PollService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +23,7 @@ public class PollController {
 
     // GET /api/polls -> Lista todas as enquetes
     @GetMapping
-    public ResponseEntity<List<Poll>> getAllPolls() {
+    public ResponseEntity<List<PollCreateDTO>> getAllPolls() {
         return ResponseEntity.ok(pollService.getAllPolls());
     }
 
@@ -42,7 +42,7 @@ public class PollController {
 
     // POST /api/polls/{pollId}/vote -> Registra um voto
     @PostMapping("/{pollId}/vote")
-    public ResponseEntity<Map<String, Object>> vote(@PathVariable Long pollId, @RequestParam Long optionId, @RequestBody VoteRequest request) {
+    public ResponseEntity<Map<String, Object>> vote(@PathVariable Long pollId, @RequestParam Long optionId, @RequestBody VoteDTO request) {
         Boolean hasVoted = pollService.vote(pollId, optionId, request.getEmail());
         return ResponseEntity.ok(Map.of("hasVoted", hasVoted));
     }

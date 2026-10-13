@@ -1,6 +1,6 @@
 package com.votajs.dto;
 
-public class VoteRequest {
+public class VoteDTO {
     public String email;
 
     public String getEmail() {

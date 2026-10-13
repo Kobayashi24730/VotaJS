@@ -5,11 +5,15 @@ import com.votajs.model.Poll;
 import com.votajs.repository.OptionRepository;
 import com.votajs.repository.PollRepository;
 import com.votajs.controller.PollStreamController;
+import com.votajs.dto.PollCreateDTO;
+import com.votajs.dto.OptionDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import javax.management.RuntimeMBeanException;
+import java.util.stream.Collectors;
 
 @Service
 public class PollService {
@@ -17,14 +21,36 @@ public class PollService {
     private final OptionRepository optionRepository;
     private final PollStreamController pollStreamController;
 
+    private PollCreateDTO ConvertToDTO(Poll poll) {
+        PollCreateDTO dto = new PollCreateDTO();
+        dto.setId(poll.getId());
+        dto.setQuestion(poll.getQuestion());
+        dto.setAuthor(poll.getAuthor());
+        dto.setDate(poll.getDate());
+        dto.setDescription(poll.getDescription());
+        dto.setDescriptionTitle(poll.getDescriptionTitle());
+        dto.setVotesCount(poll.getVotesCount());
+        dto.setVotedEmails(poll.getVotedEmails());
+        List<OptionDTO> options = poll.getOptions().stream().map(o -> {
+            OptionDTO optionDTO = new OptionDTO();
+            optionDTO.setId(o.getId());
+            optionDTO.setText(o.getText());
+            optionDTO.setVotes(o.getVotes().intValue());
+            return optionDTO;
+        }).toList();
+
+        dto.setOptions(options);
+        return dto;
+    }
+
     public PollService(PollRepository pollRepository, OptionRepository optionRepository, PollStreamController pollStreamController) {
         this.pollRepository = pollRepository;
         this.optionRepository = optionRepository;
         this.pollStreamController = pollStreamController;
     }
 
-    public List<Poll> getAllPolls() {
-        return pollRepository.findAll();
+    public List<PollCreateDTO> getAllPolls() {
+        return pollRepository.findAll().stream().map(this::ConvertToDTO).collect(Collectors.toList());
     }
 
     public Poll getPollById(Long id) {
