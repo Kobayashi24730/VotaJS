@@ -46,4 +46,10 @@ public class PollController {
         Boolean hasVoted = pollService.vote(pollId, optionId, request.getEmail());
         return ResponseEntity.ok(Map.of("hasVoted", hasVoted));
     }
+
+    @DeleteMapping("/{pollId}")
+    public ResponseEntity<Void> deletePoll(@PathVariable Long pollId, @RequestParam String userEmail) {
+        pollService.deletePoll(pollId, userEmail);
+        return ResponseEntity.noContent().build();
+    }
 }

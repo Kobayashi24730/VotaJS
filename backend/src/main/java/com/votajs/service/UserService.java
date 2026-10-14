@@ -2,15 +2,18 @@ package com.votajs.service;
 
 import com.votajs.model.User;
 import com.votajs.repository.UserRepository;
+import com.votajs.repository.PollRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.votajs.dto.LoginDTO;
 import com.votajs.dto.RegisterDTO;
 import java.util.Optional;
+
 
 @Service
 public class UserService implements UserDetailsService {
@@ -20,6 +23,10 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private PollRepository pollRepository;
+
 
     @Override 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -45,5 +52,13 @@ public class UserService implements UserDetailsService {
     //?  Retorna o user com base no email
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    //? Logica para deletar um usuario e todas as enquetes criadas pelo mesmo.
+    @Transactional
+    public void deleteUser(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Utilizador nao encontrado."));
+        pollRepository.deleteAllByAuthor(user.getEmail());
+        userRepository.delete(user);
     }
 }

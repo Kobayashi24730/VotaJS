@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { pollServices } from "@/services/pollSevices";
 import { toast } from "sonner";
+import { EqualSquareIcon } from "lucide-react";
 
 export function usePolls() {
     const [polls, setPolls] = useState([]);
@@ -49,6 +50,21 @@ export function usePolls() {
         }
     };
 
+    const deletePoll = async (pollId, userEmail) => {
+        try {
+
+            const deleted = await pollServices.deletePoll(pollId, userEmail);
+            if (deleted) {
+                toast.success("Enquete apagada com sucesso!");
+                await fetchPolls();
+            } else {
+                toast.error("Erro ao apagar a enquete.");
+            }
+        } catch (err) {
+            throw new Error(err.response?.data?.message || "Erro ao apagar a enquete.");
+        }
+    }
+
     //? Carrega as enquetes iniciais.
     useEffect(() => {
         fetchPolls();
@@ -86,5 +102,5 @@ export function usePolls() {
         }
     }, []);
 
-    return { polls, loading, error, createPoll, fetchPolls, submitVote };
+    return { polls, loading, error, createPoll, fetchPolls, submitVote, deletePoll };
 }

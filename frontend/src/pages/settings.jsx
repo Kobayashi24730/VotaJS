@@ -17,8 +17,8 @@ import { usePolls } from "@/hooks/usePolls";
 import { toast } from "sonner";
 
 export function Settings() {
-  const { user, loading, logout: authLogout } = useAuth();
-  const { polls } = usePolls();
+  const { user, loading, logout: authLogout, deleteAccount: userDeleteAccount } = useAuth();
+  const { polls, deletePoll } = usePolls();
   const form = useForm({
     defaultValues: {
       NomeCompleto: user?.nome || user?.email || "undefined",
@@ -45,9 +45,9 @@ export function Settings() {
     }
   };
 
-  const deleteAccount = async () => {
-    const response = await remove();
-    if (response.success) {
+  const deleteAccount = async (email) => {
+    const response = await userDeleteAccount(email);
+    if (response.ok) {
       toast.success("Conta deletada com sucesso!");
     } else {
       toast.error("Erro ao deletar conta.");
@@ -208,7 +208,7 @@ export function Settings() {
               type="button"
               variant="outline"
               className="border-red-300 text-red-600 hover:bg-red-50 hover:text-red-700 rounded-lg font-medium"
-              onClick={() => deleteAccount()}
+              onClick={() => deleteAccount(user.email)}
             >
               Deletar conta
             </Button>
@@ -228,17 +228,19 @@ export function Settings() {
         <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-2xs space-y-4">
           <h2 className="text-base font-semibold text-slate-900">Pequeno cards para o administração do criador dos cards.</h2>
           <div className="flex max-w-max items-center gap-2 border border-slate-200 rounded-lg p-4">
-            <div>
-              <p className="text-sm text-slate-500">
-                <span className="font-semibold">Card 1:</span>
-              </p>
-              <div>
-                <Button>
-                  Excluir
-                </Button>
-                <Button>Ver mais</Button>
+            {polls.map((p) => (
+              <div key={p.id}>
+                <p className="text-sm text-slate-500">
+                  <span className="font-semibold">Card 1:</span>
+                </p>
+                <div>
+                  <Button onClick={() => deletePoll(p.id, user.email)}>
+                    Excluir
+                  </Button>
+                  <Button>Ver mais</Button>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </AnimateSections>

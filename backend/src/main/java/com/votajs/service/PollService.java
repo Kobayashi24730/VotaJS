@@ -69,6 +69,16 @@ public class PollService {
         return savePoll;
     }
 
+    //? Logica para o usuario apagar uma enquete.
+    @Transactional
+    public void deletePoll(Long pollId, String userEmail) {
+        Poll poll = pollRepository.findById(pollId).orElseThrow(() -> new RuntimeException("Enquete nao encontrada."));
+        if (!poll.getAuthor().equals(userEmail)) {
+            throw new RuntimeException("Não tens permissão para apagar esta enquete.");
+        }
+        pollRepository.delete(poll);
+    }
+
     @Transactional
     public boolean vote(Long pollId, Long optionId, String userEmail) {
         Poll poll = getPollById(pollId);

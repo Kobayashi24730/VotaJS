@@ -38,6 +38,12 @@ public class AuthController {
         var token = tokenService.generateToken((User) auth.getPrincipal());
         return ResponseEntity.ok(new LoginResponseDto(token));
     }
+
+    @DeleteMapping("/account")
+    public ResponseEntity<Void> deleteAccount(@RequestParam String email) {
+        userService.deleteUser(email);
+        return ResponseEntity.noContent().build();
+    }
 }
 
 record LoginResponseDto(String token) {}

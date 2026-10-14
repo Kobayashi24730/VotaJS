@@ -23,5 +23,8 @@ export const pollServices = {
     vote: async (pollId, optionId, email) => {
         const response = await api.post(`/polls/${pollId}/vote?optionId=${optionId}`, { email: email });
         return response.data.hasVoted;
+    },
+    deletePoll: async (pollId, userEmail) => {
+        await api.delete(`/polls/${pollId}?userEmail=${userEmail}`);
     }
 }

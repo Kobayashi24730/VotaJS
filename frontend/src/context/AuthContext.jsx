@@ -60,6 +60,11 @@ export function AuthProvider({children}) {
         localStorage.removeItem("@App:user");
         delete api.defaults.headers.common["Authorization"];
     }
+
+    const deleteAccount = async (email) => {
+        await api.delete(`/users/account?email=${email}`);
+    }
+
     return (
         <AuthContext.Provider value={{ 
             signed: !!user, //? boolean true para o usuario quando ele estiver logado
@@ -68,6 +73,7 @@ export function AuthProvider({children}) {
             login,
             register,
             logout,
+            deleteAccount,
          }}>
             {children}
         </AuthContext.Provider>
