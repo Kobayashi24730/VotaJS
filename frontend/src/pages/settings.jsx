@@ -15,10 +15,12 @@ import { AnimateSections } from "@/components/animateSections";
 import { useAuth } from "@/context/AuthContext";
 import { usePolls } from "@/hooks/usePolls";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export function Settings() {
   const { user, loading, logout: authLogout, deleteAccount: userDeleteAccount } = useAuth();
   const { polls, deletePoll } = usePolls();
+  const navigate = useNavigate();
   const form = useForm({
     defaultValues: {
       NomeCompleto: user?.nome || user?.email || "undefined",
@@ -46,20 +48,21 @@ export function Settings() {
   };
 
   const deleteAccount = async (email) => {
-    const response = await userDeleteAccount(email);
-    if (response.ok) {
+    try {
+      await userDeleteAccount(email);
       toast.success("Conta deletada com sucesso!");
-    } else {
+      authLogout();
+    } catch (err) {
       toast.error("Erro ao deletar conta.");
     }
   };
 
   const logout = async () => {
-    const response = await authLogout();
-    if (response.success) {
+    try {
+      await authLogout();
       toast.success("Deslogado com sucesso!");
       navigate("/auth");
-    } else {
+    } catch (err) {
       toast.error("Erro ao deslogar.");
     }
   };
@@ -225,23 +228,55 @@ export function Settings() {
       </AnimateSections>
 
       <AnimateSections delay={0.4}>
-        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-2xs space-y-4">
-          <h2 className="text-base font-semibold text-slate-900">Pequeno cards para o administração do criador dos cards.</h2>
-          <div className="flex max-w-max items-center gap-2 border border-slate-200 rounded-lg p-4">
-            {polls.map((p) => (
-              <div key={p.id}>
-                <p className="text-sm text-slate-500">
-                  <span className="font-semibold">Card 1:</span>
-                </p>
-                <div>
-                  <Button onClick={() => deletePoll(p.id, user.email)}>
-                    Excluir
-                  </Button>
-                  <Button>Ver mais</Button>
-                </div>
-              </div>
-            ))}
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm space-y-5">
+          <div>
+            <h2 className="text-base font-bold text-slate-900">Painel de Administração de Enquetes</h2>
+            <p className="text-xs text-slate-500 mt-0.5">Gerencie e visualize as enquetes criadas por si.</p>
           </div>
+
+          {polls.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {polls.map((p, index) => (
+                <div 
+                  key={p.id}
+                  className="flex flex-col justify-between border border-slate-200/80 bg-slate-50/50 rounded-xl p-4 transition-all hover:shadow-md hover:border-slate-300"
+                >
+                  <div className="space-y-1 mb-4">
+                    <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                      Card #{index + 1}
+                    </span>
+                    <p className="text-sm font-semibold text-slate-800 line-clamp-2">
+                      {p.question || p.title || "Enquete sem título"}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-2 border-t border-slate-200/60">
+                    <Button 
+                      variant="destructive" 
+                      size="sm"
+                      className="w-full text-xs h-8 shadow-xs"
+                      onClick={() => deletePoll(p.id, user.email)}
+                    >
+                      Excluir
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      className="w-full text-xs h-8 bg-white border-slate-200 hover:bg-slate-100"
+                    >
+                      Ver mais
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8 border border-dashed border-slate-200 rounded-xl bg-slate-50/30">
+              <p className="text-sm text-slate-400 italic">
+                Nenhum card criado ainda. Suas enquetes aparecerão aqui.
+              </p>
+            </div>
+          )}
         </div>
       </AnimateSections>
     </div>

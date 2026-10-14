@@ -23,7 +23,7 @@ public class WebConfig {
         return http
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/auth/**", "/api/polls/**").permitAll().anyRequest().authenticated()).build(); // Libera as rotas de login/registro
+            .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/auth/**","/api/users/**", "/api/polls/**").permitAll().anyRequest().authenticated()).build(); // Libera as rotas de login/registro
     }
 
     @Bean

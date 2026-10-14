@@ -31,9 +31,10 @@ export function AuthProvider({children}) {
     const login = async (email, password) => {
         try {
             const response = await api.post("auth/login", {email, password});
-            const { user, token } = response.data;
-            const userData = user || { email };
+            const { name, token } = response.data;
+            const userData = { name, email } ;
             setUser(userData);
+            console.log(userData);
 
             localStorage.setItem("@App:token", token);
             localStorage.setItem("@App:user", JSON.stringify(userData));
@@ -62,7 +63,7 @@ export function AuthProvider({children}) {
     }
 
     const deleteAccount = async (email) => {
-        await api.delete(`/users/account?email=${email}`);
+        await api.delete(`auth/account?email=${email}`);
     }
 
     return (

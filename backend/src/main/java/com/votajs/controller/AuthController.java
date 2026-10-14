@@ -35,8 +35,9 @@ public class AuthController {
     public ResponseEntity<LoginResponseDto> Login(@RequestBody @Valid LoginDTO user) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(user.email(), user.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-        var token = tokenService.generateToken((User) auth.getPrincipal());
-        return ResponseEntity.ok(new LoginResponseDto(token));
+        User principal = (User) auth.getPrincipal(); //? Obtem o utilizador autenticado
+        var token = tokenService.generateToken(principal); //? Gera o token
+        return ResponseEntity.ok(new LoginResponseDto(token, principal.getUsername(), principal.getEmail()));
     }
 
     @DeleteMapping("/account")
@@ -46,4 +47,4 @@ public class AuthController {
     }
 }
 
-record LoginResponseDto(String token) {}
+record LoginResponseDto(String token, String name, String email) {}
