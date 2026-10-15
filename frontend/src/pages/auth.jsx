@@ -25,7 +25,7 @@ const loginSchema = z.object({
 });
 
 const registerSchema = z.object({
-  name: z.string().min(2, { message: "O nome deve ter no mínimo 2 caracteres." }),
+  nome: z.string().min(2, { message: "O nome deve ter no mínimo 2 caracteres." }),
   email: z.string().email({ message: "Email inválido." }),
   password: z.string().min(6, { message: "A senha deve ter no mínimo 6 caracteres." }),
 })
@@ -38,7 +38,7 @@ export function Auth() {
   const form = useForm({
     resolver: zodResolver(currentFormSchema),
     defaultValues: {
-      name: "",
+      nome: "",
       email: "",
       password: "",
     },
@@ -59,7 +59,7 @@ export function Auth() {
         toast.error("Email ou senha incorretos.");
       }
     } else if (isFormType === "register") {
-      const result = await register(data.name, data.email, data.password);
+      const result = await register(data.nome, data.email, data.password);
       if (result.success) {
         toast.success("Conta criada com sucesso!");
         setIsFormType("login");
@@ -98,7 +98,7 @@ export function Auth() {
                 >
                   {isFormType === "register" && (  
                     <FormField
-                      name="name"
+                      name="nome"
                       control={form.control}
                       render={({ field }) => (
                         <FormItem>
@@ -158,7 +158,7 @@ export function Auth() {
                     type="submit"
                     className="h-11 w-full bg-[#0078d4] font-medium text-white hover:bg-[#0063b1] transition-colors"
                   >
-                    Entrar
+                    {isFormType === "login" ? "Entrar" : "Criar Conta"}
                   </Button>
                 </form>
               </Form>

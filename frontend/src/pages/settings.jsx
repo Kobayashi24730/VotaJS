@@ -239,33 +239,36 @@ export function Settings() {
               {polls.map((p, index) => (
                 <div 
                   key={p.id}
-                  className="flex flex-col justify-between border border-slate-200/80 bg-slate-50/50 rounded-xl p-4 transition-all hover:shadow-md hover:border-slate-300"
+                  className="group flex flex-col justify-between bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs transition-all duration-200 hover:shadow-md hover:border-slate-300 hover:-translate-y-0.5"
                 >
-                  <div className="space-y-1 mb-4">
-                    <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-                      Card #{index + 1}
-                    </span>
-                    <p className="text-sm font-semibold text-slate-800 line-clamp-2">
+                  {/* Cabeçalho do Card */}
+                  <div className="space-y-1.5 mb-5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                        Card #{index + 1}
+                      </span>
+                      {/* Opcional: Indicador de votos ou status */}
+                      <span className="text-xs font-medium text-slate-400">
+                        {p.votesCount || 0} votos
+                      </span>
+                    </div>
+                    
+                    <p className="text-sm font-semibold text-slate-900 line-clamp-2 leading-snug group-hover:text-indigo-900 transition-colors">
                       {p.question || p.title || "Enquete sem título"}
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-2 pt-2 border-t border-slate-200/60">
+                  {/* Ações (Botões) */}
+                  <div className="flex items-center gap-2.5 pt-3 border-t border-slate-100">
                     <Button 
                       variant="destructive" 
                       size="sm"
-                      className="w-full text-xs h-8 shadow-xs"
+                      className="w-full text-xs h-9 font-medium shadow-xs bg-red-600 hover:bg-red-700 transition-colors"
                       onClick={() => deletePoll(p.id, user.email)}
                     >
                       Excluir
                     </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      className="w-full text-xs h-8 bg-white border-slate-200 hover:bg-slate-100"
-                    >
-                      Ver mais
-                    </Button>
+
                   </div>
                 </div>
               ))}

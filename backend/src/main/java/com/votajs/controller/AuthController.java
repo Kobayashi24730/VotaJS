@@ -37,7 +37,7 @@ public class AuthController {
         var auth = this.authenticationManager.authenticate(usernamePassword);
         User principal = (User) auth.getPrincipal(); //? Obtem o utilizador autenticado
         var token = tokenService.generateToken(principal); //? Gera o token
-        return ResponseEntity.ok(new LoginResponseDto(token, principal.getUsername(), principal.getEmail()));
+        return ResponseEntity.ok(new LoginResponseDto(token, principal.getNome(), principal.getEmail()));
     }
 
     @DeleteMapping("/account")

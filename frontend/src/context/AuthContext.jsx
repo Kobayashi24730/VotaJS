@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { api } from "@/api/api";
-import { locales } from "zod";
 
 const AuthContext = createContext();
 
@@ -31,8 +30,8 @@ export function AuthProvider({children}) {
     const login = async (email, password) => {
         try {
             const response = await api.post("auth/login", {email, password});
-            const { name, token } = response.data;
-            const userData = { name, email } ;
+            const { nome, token } = response.data;
+            const userData = { nome, email } ;
             setUser(userData);
             console.log(userData);
 

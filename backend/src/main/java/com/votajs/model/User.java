@@ -23,6 +23,14 @@ public class User implements UserDetails {
     private String email;
     private String password;
 
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+    
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(); //? Ou as rules do ultilizador.
