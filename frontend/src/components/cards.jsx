@@ -12,9 +12,9 @@ import {
 } from "@/components/ui/card";
 import { ModalExpanEnquete } from "@/components/modals/modalExpanEnquete";
 
-export function Cards(poll, maxlength = 50) {
+export function Cards({poll, maxlength = 50}) {
   const [isOpenExpanEnqueteModal, setIsOpenExpanEnqueteModal] = useState(false);
-  const pollFormat = poll.poll;
+  const pollFormat = poll;
 
   return (
     <Card className="group relative mx-auto w-full max-w-sm overflow-hidden border border-slate-200/80 bg-white shadow-sm transition-all duration-300 hover:shadow-lg hover:border-slate-300">
