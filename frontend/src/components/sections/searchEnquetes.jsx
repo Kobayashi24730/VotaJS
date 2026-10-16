@@ -103,7 +103,7 @@ export function SearchEnquetes() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filterPolls.map((poll) => {
               return (
-                <Cards key={poll.id} poll={poll}/>
+                <Cards key={poll.id} poll={poll} maxlength={30}/>
               )
             })}
           </div>

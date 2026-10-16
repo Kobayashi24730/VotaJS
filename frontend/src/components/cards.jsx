@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { ModalExpanEnquete } from "@/components/modals/modalExpanEnquete";
 
-export function Cards(poll) {
+export function Cards(poll, maxlength = 50) {
   const [isOpenExpanEnqueteModal, setIsOpenExpanEnqueteModal] = useState(false);
   const pollFormat = poll.poll;
 
@@ -40,7 +40,10 @@ export function Cards(poll) {
           {pollFormat.descriptionTitle ? pollFormat.descriptionTitle : pollFormat.question}
         </CardTitle>
         <CardDescription className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
-          {pollFormat.description ? pollFormat.description : pollFormat.question}
+          {(() => {
+            const text = pollFormat.description || pollFormat.question || "Enquete sem descrição.";
+            return text.length > maxlength ? text.substring(0, maxlength) + "..." : text;
+          })()}
         </CardDescription>
       </CardHeader>
 

@@ -47,7 +47,7 @@ export function Auth() {
   const toggleFormType = () => {
     const nextFormType = isFormType === "login" ? "register" : "login";
     setIsFormType(nextFormType);
-    form.reset({ name: "", email: "", password: "" });
+    form.reset({ nome: "", email: "", password: "" });
   }
   const onSubmit = async (data) => {
     if (isFormType === "login") {

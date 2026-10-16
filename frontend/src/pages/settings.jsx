@@ -23,7 +23,7 @@ export function Settings() {
   const navigate = useNavigate();
   const form = useForm({
     defaultValues: {
-      NomeCompleto: user?.nome || user?.email || "undefined",
+      NomeCompleto: user?.name || user?.email || "undefined",
       email: user?.email || "undefined",
     },
   });
@@ -245,7 +245,7 @@ export function Settings() {
                   <div className="space-y-1.5 mb-5">
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full uppercase tracking-wider">
-                        Card #{index + 1}
+                        Card #{p.id}
                       </span>
                       {/* Opcional: Indicador de votos ou status */}
                       <span className="text-xs font-medium text-slate-400">

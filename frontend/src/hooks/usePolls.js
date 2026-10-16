@@ -55,10 +55,10 @@ export function usePolls() {
 
             const deleted = await pollServices.deletePoll(pollId, userEmail);
             if (deleted) {
+                toast.error("Erro ao apagar a enquete.");
+            } else {
                 toast.success("Enquete apagada com sucesso!");
                 await fetchPolls();
-            } else {
-                toast.error("Erro ao apagar a enquete.");
             }
         } catch (err) {
             throw new Error(err.response?.data?.message || "Erro ao apagar a enquete.");
