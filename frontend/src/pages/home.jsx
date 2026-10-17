@@ -4,7 +4,7 @@ import { Vote, Activity, CheckCircle2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Enquetes } from "@/components/sections/enquetes";
 import { AnimateSections } from "@/components/animateSections";
-import imgEs from "../assets/Checklist-removebg-preview.png";
+import imgEs from "../assets/bgHome.png";
 import { ModalCreate } from "@/components/modals/modalCreate";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -135,9 +135,7 @@ export function Home() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative z-10 w-full max-w-md lg:max-w-none group"
             >
-              <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-2xl blur-md opacity-25 group-hover:opacity-40 transition duration-500"></div>
-
-              <div className="relative rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-2xl">
+              <div className="relative z-10">
                 <img
                   src={imgEs}
                   alt="Foto do Painel de Enquetes"
@@ -165,8 +163,8 @@ export function Home() {
                 <Vote className="h-6 w-6" />
               </div>
               <div>
-                <p className="text-xs font-medium text-slate-500">Votos computados</p>
-                <p className="text-lg font-bold text-slate-900">+10.000 hoje</p>
+                <p className="text-xs font-medium text-slate-500">Seu voto conta.</p>
+                <p className="text-lg font-bold text-slate-900">Vota em Tempo Real</p>
               </div>
             </motion.div>
           </div>

@@ -13,7 +13,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import votaLogo from "@/assets/votaLogo.svg"
+import votaLogo from "@/assets/votaLogo.svg";
+import { useAuth } from "@/context/AuthContext";
 
 const items = [
   { title: "Home", url: "/", icon: Home },
@@ -22,6 +23,7 @@ const items = [
 ]
 
 export function Navbar() {
+  const { user, logout } = useAuth()
   const location = useLocation()
 
   return (
@@ -97,23 +99,40 @@ export function Navbar() {
 
       {/* Rodapé / Perfil do Usuário */}
       <SidebarFooter className="p-3 border-t border-slate-100">
-        <Link to="/settings" className="flex items-center justify-between px-2.5 py-2 rounded-md bg-slate-50 border border-slate-200/60 hover:bg-slate-100/80 transition-colors">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-slate-700 font-semibold text-xs border border-slate-300/50">
-              <User className="h-4 w-4" />
-            </div>
-            <div className="flex flex-col text-left">
-              <span className="text-xs font-semibold text-slate-900 leading-tight">Ajent</span>
-              <span className="text-[10px] text-slate-500 font-medium">admin@votajs.com</span>
-            </div>
-          </div>
-          <button
-            title="Sair"
-            className="text-slate-400 hover:text-red-600 transition-colors p-1.5 rounded-md hover:bg-white hover:shadow-sm"
-          >
-            <LogOut className="h-4 w-4" />
-          </button>
-        </Link>
+        <Link 
+  to="/settings" 
+  className="flex items-center justify-between px-3 py-2.5 rounded-xl bg-slate-50/80 border border-slate-200/80 hover:bg-slate-100/90 hover:border-slate-300 transition-all shadow-xs group"
+>
+  <div className="flex items-center gap-3">
+    
+    <div className="h-10 w-10 rounded-full bg-gradient-to-b from-[#d4f83b] to-[#1ded98] shadow-sm" />
+
+    <div className="flex flex-col text-left">
+      {!user ? (
+        <>
+          <span className="text-xs font-semibold text-slate-900 leading-tight">Desconhecido</span>
+          <span className="text-[10px] text-slate-500 font-medium">Desconhecido</span>
+        </>
+      ) : (
+        <>
+          <span className="text-xs font-semibold text-slate-900 leading-tight">{user.name}</span>
+          <span className="text-[10px] text-slate-500 font-medium">{user.email}</span>
+        </>
+      )}
+    </div>
+  </div>
+
+  <button
+    title="Sair"
+    className="text-slate-400 hover:text-red-600 transition-colors p-2 rounded-lg hover:bg-white hover:shadow-sm"
+    onClick={(e) => {
+      e.preventDefault();
+      logout();
+    }}
+  >
+    <LogOut className="h-4 w-4" />
+  </button>
+</Link>
       </SidebarFooter>
     </Sidebar>
   )
